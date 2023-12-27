@@ -1,0 +1,117 @@
+.content.affiliate {
+    padding: 0 1.5rem;
+}
+
+.content.affiliate .wp-item {
+    width: 100%;
+    padding: .85rem;
+    border: 1px solid;
+    border-radius: 1rem;
+    color: #fff;
+    font-weight: bolder;
+    font-size: 1.25rem;
+    background-color: #3d5a2e;
+}
+
+.content .title, .title-modal, .content .card-title {
+    font-weight: bolder;
+    font-size: 1rem;
+    color: #808080;
+    text-transform: capitalize;
+}
+
+.content.affiliate label, .no-content {
+    font-weight: bolder;
+    font-size: .75rem;
+    color: #808080;
+    text-transform: uppercase;
+    min-width: 30%;
+    width: 30%;
+    max-width: 100%;
+    display: block;
+}
+
+.content.affiliate .no-content {
+    margin: auto;
+}
+
+.content.affiliate .name {
+    margin: 0;
+    padding: 0 5px;
+
+    font-weight: bold;
+    font-size: .8rem;
+    color: #3d5a2e;
+    text-transform: capitalize;
+
+    width: 100%;
+    align-items: baseline;
+}
+
+.content.affiliate .diachi, .content.affiliate table td span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.content.affiliate .email {
+    text-transform: none;
+}
+
+.content.affiliate .wp-box {
+    height: auto;
+}
+
+.content table th {
+    margin: 0;
+    font-weight: bold;
+    font-size: .75rem;
+    color: #3d5a2e;
+    text-transform: uppercase;
+}
+
+.content.affiliate table td {
+    margin: 0;
+    font-weight: normal;
+    font-size: .85rem;
+    color: #000;
+    text-transform: none;
+}
+
+.content.affiliate .table-responsive .table {
+   /* min-height: 9.5rem;*/
+}
+
+.content.affiliate .label{
+    display: inline;
+    padding: 0.2em 0.6em 0.3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25em;
+}
+.label-warning {
+    background-color: #f39c12 !important;
+}
+
+.label-primary {
+    background-color: #0d82ff !important;
+}
+.tool-action a{
+    float: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    vertical-align: middle;
+    text-align: center;
+}
+
+span.label.label-info {
+    background-color: mediumvioletred;
+}

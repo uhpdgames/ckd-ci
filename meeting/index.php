@@ -1,0 +1,801 @@
+<?php
+require_once "./setup.php";
+
+
+$config_base = 'https://ckdvietnam.com';
+$login = false;
+$name = !empty($_COOKIE['task_by_name']) ? $_COOKIE['task_by_name'] : '';
+$isAdmin = false;
+if (!empty($_COOKIE['task_by_uid'])) {
+    $login = $_COOKIE['task_by_uid'];
+    $isAdmin = $_COOKIE['task_by_uid'] == 1;
+}
+
+$mkt = false;
+
+if ($isAdmin) {
+    $join_in = array();
+    $allName = $d->rawQuery("select * from #_user where id <> 1 and hienthi = 1 order by stt");
+    if (is_array($allName) && count($allName)) {
+        foreach ($allName as $myname) {
+            if ($myname['phongban']) $mkt = true;
+
+            $join_in[$myname['id']] = $myname['ten'];
+            //array_push($join_in, $myname['ten']);
+        }
+    }
+} else {
+    $allName = $d->rawQuery("select * from #_user where id = ? and hienthi = 1 ", array($login));
+
+    if (isset($allName[0]['phongban']) && $allName[0]['phongban'] == 1) {
+        $mkt = true;
+    }
+//    $join_in = array(
+//        $login => $name
+//    );
+}
+
+
+$todate = !empty($_COOKIE['report_today']) ? $_COOKIE['report_today'] : TODAY;
+
+$item = $d->rawQueryOne("select * from #_task where date_created = ? limit 0,1", array(date('y-m-d', strtotime($todate))));
+$item_task = $d->rawQueryOne("select * from #_task_keyword where id = 1 limit 0,1");
+
+if (!empty($item)) {
+    $meeting = array(
+        'id' => $item['id'],
+        'meeting_content' => $item['meeting_content'],
+        'attention' => (array)json_decode($item['attention']),
+        'worked' => (array)json_decode($item['worked']),
+        'work' => (array)json_decode($item['work']),
+
+        // 'top' => (array)json_decode($item['top']),
+
+        //'keyword' => (array)json_decode($item['keyword']),
+        //'note' => (array)json_decode($item['note']),
+    );
+
+
+}
+if (!empty($item_task)) {
+    $meeting['top'] = (array)json_decode($item_task['top']);
+    $meeting['keyword'] = (array)json_decode($item_task['date']);
+    $meeting['note'] = (array)json_decode($item_task['note']);
+}
+
+
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta property="og:title" content="REPORT MEETING CONTENT"/>
+    <meta property="og:description" content="Tạo bảng báo cáo công việc hàng ngày..."/>
+    <meta property="og:url" content="https://ckdvietnam.com/meeting/"/>
+    <meta property="og:image"
+          content="https://ckdvietnam.com/upload/photo/063fa9e5565a7e5c3e443623531e5af4-2-1442.png"/>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>REPORT MEETING CONTENT</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js?v=<?= rand(0, 100000); ?>"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js?v=<?= rand(0, 100000); ?>"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js?v=<?= rand(0, 100000); ?>"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js?v=<?= rand(0, 100000); ?>"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css?v=<?= rand(0, 100000); ?>">
+    <style>@page {
+            size: A4
+        }</style>
+
+
+</head>
+<?php if ($login): ?>
+    <body class="A4"
+          style="background-size: cover; background-repeat: repeat-y;background-image: url('<?php echo $config_base . '/meeting/login/'; ?>images/bg-01.jpg');">
+
+
+    <page size="A4" class="padding-0mm col-12">
+        <div class="container mt-2">
+            <section class="content">
+                <div class="row printer-content">
+                    <div class="col col-12">
+                        <form id="frm_meeting" method="post" action="<?= $config_base ?>/meeting/store.php">
+                            <input type="hidden" name="updated" class="has-worked-today" value="<?= $meeting['id'] ?>">
+                            <input type="hidden" name="uid" class="has-worked-by-uid" value="<?= $login ?>">
+                            <input type="hidden" name="isadmin" class="has-worked-by-uid" value="<?= $isAdmin ?>">
+                            <div class="table_content">
+                                <div class="info-header w-100 h-auto">
+                                    <div class="info-header-note notranslate">
+
+                                        <div class="div-logo">
+                                            <img src="./logo.png" class="img-fluid info-logo">
+                                        </div>
+
+                                        <div class="div-text">
+
+                                            <div class="title"
+                                                 style="color:#fff; FONT-SIZE: x-large; font-weight: bolder; line-height: 1.2;">
+                                                CÔNG TY
+                                                TNHH BLUEPINK
+                                            </div>
+                                            <div class="adrr">97/9 Phạm Thái Bường, Tân Phong, Q7, HCM</div>
+                                            <div class="info">bluepink@ckdvietnam.com | www.ckdvietnam.com |
+                                                Hotline:
+                                                19007327
+                                            </div>
+
+                                        </div>
+                                        <div class="div-product div-logo">
+                                            <a data-toggle="modal" data-target="#modal-fullscreen-xl">
+                                                <img src="./new-product.png" class="img-fluid info-logo">
+                                            </a>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="w-100 h-auto">
+                                    <table cellspacing="3px" width="100%" style="border: 1px solid #0c0c0c"
+                                           id="table_meeting"
+                                           class="meeting mb-4 tableContainer">
+                                        <thead style="border: 1px solid #000">
+                                        <tr>
+                                            <th colspan="6"
+                                                style="background-color: #fff; color:red;font-size:x-large; padding: 15px 0;">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div>REPORT CONTENTS</div>
+                                                </div>
+
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="5" class="th-today">
+                                                <?php if ($isAdmin): ?>
+                                                    <div class="th-overlay">
+
+                                                        <img src="./logo.png" 
+                                                             class="img-fluid logo">
+                                                    </div>
+                                                <?php endif; ?>
+                                                <div class="ignorePDF btn-pdf">
+
+                                                    <button type="submit" id="my_submit" class="submit btn btn-success">
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                        <span>Lưu</span>
+                                                    </button>
+
+                                                    <a style="font-style: normal" class="btn btn-danger"
+                                                       onclick="logout();"
+                                                       href="javascript:void(0);">
+                                                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                        <span>Thoát</span>
+                                                    </a>
+                                                    <?php if ($isAdmin): ?>
+                                                        <a type="button" id="my_print" class="btn btn-info">
+                                                            <i class="fa fa-print" aria-hidden="true"></i>
+                                                            <span>In</span>
+                                                        </a>
+                                                    <?php endif; ?>
+
+                                                </div>
+
+                                                <?php /*= date("d/m/Y") */ ?>
+                                                <?php if ($isAdmin || $login == 125): ?>
+
+                                                    <div class="text-left my-2">Meeting Content:</div>
+                                                    <!-- <input type="text" name="meeting_content" class="value_meeting_content form-control">-->
+                                                    <div id="value_meeting_content" contenteditable
+                                                         onkeypress="disabledEnter(event);"
+                                                         class="more-input text-left custom-meeting-content"
+                                                         style="width: 90%;height: 0;"> <?php $item['meeting_content'] ? $item['meeting_content'] : '' ?> </div>
+                                                    <div type="hidden"
+                                                         class="value_meeting_content"></div>
+                                                <?php endif; ?>
+
+                                            </th>
+                                        </tr>
+                                        <tr class="notranslate">
+                                            <th width="1%" class="text-center"><span>STT</span></th>
+                                            <th width="9%" class="text-left m-0 p-3">Employees</th>
+                                            <?php /*if ($isAdmin): */ ?><!--
+                                    <th width="15%">Content</th> --><?php /*endif; */ ?>
+                                            <th width="30%">Attention</th>
+                                            <th width="30%" class="center-vertical vertical">
+                                                <div class="d-flex justify-content-center center-vertical align-items-center">
+                                                    <div style="display: block;">Work has been completed</div>
+                                                    <span style="color:  #000;">&nbsp;(</span>
+                                                    <div >
+                                                        <input
+                                                                type="text"
+                                                                class="form-control w-auto"
+                                                                name="date"
+                                                                id="date"
+                                                                value="<?= date('d-m-Y', strtotime($todate)); ?>"
+                                                                placeholder=""/>
+                                                    </div>
+                                                    <span style="color: #000;">)</span>
+                                                </div>
+                                            </th>
+                                            <th width="30%">Today's assign work</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php if ($isAdmin): ?>
+
+                                            <!--<tr style="height: 5px;min-height: 5px;">
+                                    <td width="1%">1</td>
+                                    <td width="8%">Sếp</td>
+                                    <td align="center" valign="center" rowspan="13" class="meeting-content">
+                                        <div style="display: table;    width: 100%;height: 100%;">
+                                            <div style="display: table-cell; vertical-align: middle;width: 100%;min-height: 20rem;height: 90vh;"
+                                                <?php /*if ($isAdmin) echo "contenteditable"; */ ?> class="more-input"
+                                                 id="value_meeting_content">
+                                                <?php /*= !empty($meeting['meeting_content']) ? $meeting['meeting_content'] : '' */ ?>
+                                            </div>
+                                            <input type="hidden" name="meeting_content" value=""
+                                                   class="value_meeting_content">
+                                        </div>
+                                    </td>
+                                    <td class="td-attention"></td>
+                                    <td class="td-worked"></td>
+                                    <td class="td-work"></td>
+                                </tr>-->
+                                        <?php endif; ?>
+                                        <?php
+
+                                        //  $join_in = ['Ms.Tiền', 'Mr.Huỳnh', 'Mr.Hảo', 'Ms.Quyên', 'Mr.Hòa', 'Mr.Thanh', 'Mr.Long', 'Ms.Thùy Anh', 'Mr.Đăng', 'Mr.Tuấn', 'Mr.Hào', 'Mr.Nhật'];
+                                        // $join_in = [$name];
+
+                                        $key = ['attention', 'worked', 'work'];
+
+                                        /*if($isAdmin) {
+                                            $stt = NULL;
+                                        }
+                                        else{
+                                            $stt = $login;
+                                        }*/
+                                        $stt_text = 1;
+                                        foreach ($allName as $names) {
+                                            $gioitinh_color = ($names['gioitinh'] == 2) ? 'background-color: rgba(228, 131, 192, 0.2)' : '';
+                                            $name_color = ($names['gioitinh'] == 2) ? 'color:#922724;' : '';
+                                            echo '<tr style="' . $gioitinh_color . '">';
+                                            $keyx = $names['id'];
+                                            $name = $names['ten'];
+                                            $stt = $keyx;
+                                            if ($isAdmin) {
+                                                $keyx += 2;
+                                            } else {
+                                                $keyx += 1;
+                                            }
+
+                                            ?>
+
+                                            <td class="text-center"><span class="notranslate"><?= $stt_text++ ?></span>
+                                            </td>
+                                            <td style="<?= $name_color ?>" class="text-left m-0 p-3"><span
+                                                        class="notranslate"><?= $name ?></span></td>
+
+                                            <?php
+                                            foreach ($key as $item) {
+                                                $my_content = isset($meeting[$item][$stt]) && $meeting[$item][$stt] != '' ? $meeting[$item][$stt] : '';
+
+                                                ?>
+                                                <td class="td-<?= $item; ?> <?php if (!empty($my_content) && ($item == 'attention' && $my_content != '')) echo "has-attention" ?>">
+                                                    <div class="wp-input">
+                                                        <?php if (!$isAdmin): ?><input type="hidden"
+                                                                                       class="<?= $item ?>_<?= $stt; ?> <?= $item; ?>"
+                                                                                       name="<?= $item ?>[<?= $stt ?>]"/>
+                                                        <?php endif; ?>
+                                                        <div id="<?= $item ?>_<?= $stt; ?>"
+                                                             class="more-input <?= $item; ?>"
+                                                            <?php if (!$isAdmin) echo "contenteditable"; ?> ><?php if (!empty($my_content)) echo $my_content; ?></div>
+                                                    </div>
+                                                </td>
+                                                <?php
+                                            }
+                                            ?>
+                                            <?php
+                                            echo '</tr>';
+                                        }
+
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                    <?php if ($isAdmin): ?>
+                                        <div class="overlay"></div><?php endif; ?>
+                                </div>
+                                <?php if ($mkt): ?>
+
+
+                                    <div class="div-marking info mb-4">
+                                        <div class="w-100 h-auto">
+                                            <br>
+                                            <div></div>
+                                            <br>
+                                            <div></div>
+                                            <br>
+                                            <div></div>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div style="font-weight:bolder;text-transform: uppercase;background-color: #fff; color: red; font-size: x-large; padding: 15px 0; width: 100%;">
+                                                    Keyword Planner (<?= date('d/m/Y'); ?>)
+                                                </div>
+                                            </div>
+                                            <table cellspacing="3px" width="100%" style="border: 1px solid #0c0c0c"
+                                                   id="table_seo" class="meeting mb-4 tableContainer">
+                                                <thead>
+                                                <tr>
+                                                    <th width="1%">Num</th>
+                                                    <th width="9%">SEO</th>
+                                                    <th width="30%">TOP</th>
+                                                    <th width="30%">DATE</th>
+                                                    <th width="30%">NOTE</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+
+                                                <?php
+
+                                                $key = ['top', 'keyword', 'note'];
+                                                $seo = [
+                                                    'serum collagen',
+                                                    'chăm sóc da bằng collagen',
+                                                    'collagen chống lão hóa',
+                                                    'collagen chống nếp nhăn',
+                                                    'collagen hàn quốc',
+                                                    'collagen thủy phân tử',
+                                                    'retinol chống lão hóa',
+                                                    'tác dụng phụ của retinol',
+                                                    'retinol trị mụn',
+                                                    'retinol cho nếp nhăn',
+                                                    'retinol cho da nhạy cảm',
+                                                    'collagen tự nhiên',
+                                                    'kem dưỡng da chống lão hóa',
+                                                ];
+                                                $stt_text = 1;
+                                                //  $stt = $names['id'];
+                                                ?>
+
+
+                                                <?php
+                                                if ($isAdmin) {
+                                                    $keyzz = 0;
+                                                    foreach ($join_in as $stt => $zzzzs) {
+
+                                                        foreach ($seo as $num => $s) {
+                                                            $keyzz++;
+                                                            if ($keyzz >= count($join_in)) break;
+                                                            echo '<tr> <td class="text-center"><span class="notranslate">' . $stt_text++ . '</span></td>';
+                                                            echo '<td class="text-left"><span class="notranslate">' . $s . '</span></td>';
+
+
+                                                            foreach ($key as $item) {
+                                                                $my_content = isset($meeting[$item][$stt][$num]) && $meeting[$item][$stt][$num] != '' ? $meeting[$item][$stt][$num] : '';
+
+
+                                                                ?>
+
+
+                                                                <td class="td-<?= $item; ?>">
+                                                                    <div class="wp-input">
+                                                                        <?php if (!$isAdmin): ?><input type="hidden"
+                                                                                                       class="<?= $item ?>_<?= $stt; ?>_<?= $num ?> <?= $item; ?>"
+                                                                                                       name="<?= $item ?>[<?= $stt ?>][<?= $num ?>]"/>
+                                                                        <?php endif; ?>
+
+                                                                        <div id="<?= $item ?>_<?= $stt; ?>_<?= $num ?>"
+                                                                             class="more-input <?= $item; ?>"
+                                                                            <?php if (!$isAdmin) echo "contenteditable"; ?> ><?php if (!empty($my_content)) echo $my_content; ?></div>
+                                                                    </div>
+                                                                </td>
+                                                                <?php
+                                                            }
+                                                            echo '</tr>';
+                                                        }
+
+
+                                                    }
+
+                                                } else {
+                                                    foreach ($seo as $num => $s) {
+                                                        echo '<tr> <td class="text-center"><span class="notranslate">' . $stt_text++ . '</span></td>';
+                                                        echo '<td class="text-left"><span class="notranslate">' . $s . '</span></td>';
+
+
+                                                        foreach ($key as $item) {
+                                                            $my_content = isset($meeting[$item][$stt][$num]) && $meeting[$item][$stt][$num] != '' ? $meeting[$item][$stt][$num] : '';
+
+
+                                                            ?>
+
+
+                                                            <td class="td-<?= $item; ?>">
+                                                                <div class="wp-input">
+                                                                    <?php if (!$isAdmin): ?><input type="hidden"
+                                                                                                   class="<?= $item ?>_<?= $stt; ?>_<?= $num ?> <?= $item; ?>"
+                                                                                                   name="<?= $item ?>[<?= $stt ?>][<?= $num ?>]"/>
+                                                                    <?php endif; ?>
+
+                                                                    <div id="<?= $item ?>_<?= $stt; ?>_<?= $num ?>"
+                                                                         class="more-input <?= $item; ?>"
+                                                                        <?php if (!$isAdmin) echo "contenteditable"; ?> ><?php if (!empty($my_content)) echo $my_content; ?></div>
+                                                                </div>
+                                                            </td>
+                                                            <?php
+                                                        }
+                                                        echo '</tr>';
+                                                    }
+                                                }
+
+
+                                                ?>
+                                                <!--<td>1</td>
+                                                <td>11112</td>
+                                                <td>222</td>
+                                                <td>333</td>
+                                                <td>444</td>-->
+
+                                                </tbody>
+                                            </table>
+
+                                            <?php if ($isAdmin): ?>
+                                                <div class="overlay"></div><?php endif; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </page>
+
+    <div id="google_translate_element_position" class="hidden-sm hidden-xs">
+        <div id="google_translate_element"></div>
+    </div>
+
+
+    <!-- Modal Fullscreen xl -->
+    <div class="modal modal-fullscreen-xl" id="modal-fullscreen-xl" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center" style="width: 100%;">
+                    <h5 class="modal-title" style="width: 100%;"><span
+                                class="pro-title">Product List of CKD Cosmetics</span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="container">
+                        <?php
+                        $name = array(
+                            'D21055' => 'CKD GUARANTEED Retino Collagen Small Molecule 300 First Essence',
+                            'D21023' => 'CKD Retino Collagen Small Molecule 300 Cream',
+                            'D21025' => 'CKD Retino Collagen Small Molecule 300 Intensive Cream',
+                            'D22002' => 'CKD Retino Collagen Small Molecule 300 Collagen Pumping Ampoule',
+                            'D22003' => 'CKD Retino Collagen Small Molecule 300 Collagen Skin Toner',
+                            'D22042' => 'CKD Retino Collagen Small Molecule 300 Pore Clanesing Foam',
+                            'D22067' => 'CKD Retino Collagen Small Molecule 300 Glow Stick',
+                            'D22119' => 'CKD Retino Collagen Small Molecule 300 Guasha Neck Cream',
+                            'D22268' => 'CKD Retino Collagen Small Molecule 300 Guasha Lifting Serum',
+                            'D22178' => 'CKD Retino Collagen Small Molecule 300 Pore & Easticity Mask',
+                            'D22179' => 'CKD Retino Collagen Small Molecule 300 Pore & Easticity Mask (5EA)',
+                            'D22219' => 'CKD Retino Collagen Small Molecule 300 tightening Cream Pack (with Mini)',
+                            'D22065' => 'CKD Vita C Teca 7 Days Blemish Ampoule',
+                            'D22066' => 'CKD Vita C Teca 7 Days Blemish Ampoule set',
+                            'D21030' => 'CKD Green Propolis All-coery Sun',
+                            'D21031' => 'CKD Green Propolis All-mid Sun',
+                            'D21062' => 'Amino Biotin All-powerful Shampoo',
+                            'D21063' => 'Amino Biotin All-powerful Shampoo',
+                            'D21110' => 'Amino Biotin All-powerful Treetment',
+                            'D22047' => 'Amito Biotin Protein Cream Shampoo Set',
+                            'D22075' => 'Amino Biotin Quick B\'lack Shampoo',
+                            'D22223' => 'Amino Biotin Quick B\'lack Shampoo Plus 150g',
+                            'D22224' => 'Amino Biotin Quick B\'lack Shampoo Plus 200g',
+                            'D22072' => 'CKD for Men Auqa Hyalon All In One Essence ',
+                            'D22073' => 'CKD for Men Auqa Hyalon Shine Wax',
+                            'D22074' => 'CKD for Men Auqa Hyalon Matt Wax',
+                            'D21057' => 'LACTODERM Beneficial Moisturizing Cream (Jumbo) ',
+                            'D21058' => 'LACTODERM Beneficial Moisturizing Skin Wash',
+                            'D22008' => 'LACTODERM Beneficial Moisturizing Wash 400ml',
+                            'D22009' => 'LACTODERM Beneficial Moisturizing Lotion 400ml',
+                            'D22010' => 'LACTODERM Beneficial Heartleaf Mask (4ea)',
+                            'D21103' => 'LACTODERM Beneficial Heartleaf Mask',
+                            'D22089' => 'LACTODERM Beneficial Heartleaf Moisturizing Toner',
+                            'D22090' => 'LACTODERM Beneficial Heartleaf Moisturizing Cream',
+                            'D22091' => 'LACTODERM Beneficial Heartleaf Moisturizing Cleansing Foam',
+                            'D23015' => 'LACTODERM Beneficial Skin Daily Sun',
+                            'D21096' => 'Bellasoo Decollete Neck Cream',
+                            'D21109' => 'Bellasoo V-Stretching Band Mask ',
+                            'D22239' => 'Bellasoo Volume-tocx Lifting Mask ',
+                        );
+                        ?>
+                        <div class="col-12 boxx d-flex flex-row flex-wrap" style="width: 100%">
+                            <?php
+
+                            $stt = 1;
+                            foreach ($name as $code => $nam) {
+                                $image = site_url() . 'assets/images/media/' . $stt . '.png';
+                                $stt++;
+                                ?>
+
+
+                                <div class="wp">
+                                    <img src="<?= $image ?>" >
+
+                                    <div class="div-name mt-2">
+                                        <div class="hover-text"><span
+                                                    style="font-weight: bolder;color: red;"><?= $code; ?></span>
+                                            <span class="tooltip-text bottom"><?= $nam; ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <?php
+                            }
+
+                            ?>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </body>
+<?php else: ?>
+    <?php require_once './login/index.php'; ?>
+<?php endif; ?>
+</html>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css?v=<?= rand(0, 100000); ?>">
+<script src="https://code.jquery.com/jquery-3.6.0.js?v=<?= rand(0, 100000); ?>"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js?v=<?= rand(0, 100000); ?>"></script>
+<script type="text/javascript"
+        src="//translate.google.com/translate_a/element.js?v=<?= rand(0, 100000); ?>&cb=googleTranslateElementInit"></script>
+
+<script src="notify.min.js"></script>
+<script>
+    function googleTranslateElementInit() {
+
+
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'vi',
+                includedLanguages: 'en,ko,vi',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element'
+        );
+    }
+
+    function logout() {
+        eraseCookie('task_by_uid');
+        eraseCookie('task_by_name');
+        eraseCookie('report_today');
+        window.location.reload();
+    }
+
+    config_base = "<?php echo $config_base?>";
+    isAdmin = "<?php echo $isAdmin?>";
+    const join = ["<?=$name;?>"];
+    const j = "<?=$login;?>";
+
+
+    $(document).ready(function () {
+
+        function updateSEO() {
+            $seo = [
+                'serum collagen',
+                'chăm sóc da bằng collagen',
+                'collagen chống lão hóa',
+                'collagen chống nếp nhăn',
+                'collagen hàn quốc',
+                'collagen thủy phân tử',
+                'retinol chống lão hóa',
+                'tác dụng phụ của retinol',
+                'retinol trị mụn',
+                'retinol cho nếp nhăn',
+                'retinol cho da nhạy cảm',
+                'collagen tự nhiên',
+                'kem dưỡng da chống lão hóa',
+            ];
+
+            const keys = ['top', 'keyword', 'note'];
+            $seo.forEach((vv, index) => {
+                join.forEach((v) => {
+                    // j++;
+                    for (let v of keys) {
+                        const content = $(`#${v}_${j}_${index}`).html();
+                        if (!!content) {
+                            $(`.${v}_${j}_${index}`).val(content);
+
+                        }
+                    }
+                });
+            })
+
+        }
+
+        function raw() {
+            if (isAdmin == "1") {
+                const my_content = $('#value_meeting_content').html();
+                if (!!my_content) {
+                    $('.value_meeting_content').val(my_content);
+                }
+            } else {
+                updateSEO();
+
+                const keys = ['attention', 'worked', 'work'];
+                join.forEach((v) => {
+                    // j++;
+                    for (let v of keys) {
+                        const content = $(`#${v}_${j}`).html();
+                        if (!!content) {
+                            $(`.${v}_${j}`).val(content);
+
+                        }
+                    }
+                });
+            }
+
+            // const join = ['Ms.Tiền', 'Mr.Huỳnh', 'Mr.Hảo', 'Ms.Quyên', 'Mr.Hòa', 'Mr.Thanh', 'Mr.Long', 'Ms.Thùy Anh', 'Mr.Đăng', 'Mr.Tuấn', 'Mr.Hào', 'Mr.Nhật'];
+
+        }
+
+        var issave = false;
+
+        function save() {
+            if (issave) return false;
+
+            raw();
+            const my_data = $("#frm_meeting").serialize();
+            const request = $.ajax({
+                url: "<?=$config_base?>/meeting/store.php",
+                type: "POST",
+                dataType: 'json',
+                data: my_data
+            });
+            if (request) {
+                issave = true;
+                $.notify("Đã lưu lại!",
+                    {
+                        className: 'success',
+                        hideDuration: 100,
+                        showAnimation: 'slideDown',
+                        style: 'bootstrap',
+                        position: "bottom center"
+                    }
+                );
+            }
+        }
+
+
+        $('.more-input').on('DOMSubtreeModified', function (e) {
+            //console.log('changed');
+
+            // save();
+        });
+
+        $('#my_submit').click(function (e) {
+            raw();
+        });
+
+        $('#my_print').click(function (e) {
+
+            //  var $elie = $("#table_meeting");
+            //  var $body = $('body');
+            //  $body.addClass('print');
+
+            //rotate(90);
+
+            /*function rotate(degree) {
+                $elie.css({WebkitTransform: 'rotate(' + degree + 'deg)'});
+                $elie.css({'-moz-transform': 'rotate(' + degree + 'deg)'});
+            }*/
+
+            document.title = "Print page title";
+            window.print();
+
+
+            //rotate(0);
+            //$body.removeClass('print');
+        });
+
+        $('input[name=date]').change(function () {
+            const _val = $(this).val();
+            setCookie('report_today', _val, 7);
+            console.log(_val);
+            $("#date").datepicker({dateFormat: 'dd-mm-yy'}).datepicker("setDate", _val);
+            window.location.reload();
+        });
+
+        function replaceQueryParam(param, newval, search) {
+            var regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
+            var query = search.replace(regex, "$1").replace(/&$/, '');
+
+            return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
+        }
+
+
+        $("#frm_meeting").on("submit", function (e) {
+          //  e.preventDefault();
+           // return false;
+        })
+
+        var vals = null;
+        setInterval(function () {
+            //Store();
+            //issave = false;
+        }, 500); // 1000 = 1 sec
+
+
+        function Store() {
+            $(".more-input").on("blur", function () {
+                save();
+            });
+
+        }
+
+    });
+
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    $("#date").datepicker({dateFormat: 'dd-mm-yy'});
+
+
+    function disabledEnter(event) {
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    }
+
+
+</script>
+<link rel="stylesheet" href="css/main.css?v=<?= rand(0, 100000); ?>"/>
+<link rel="stylesheet" media="screen" href="css/screen.css?v=<?= rand(0, 100000); ?>"/>
+<link rel="stylesheet" media="print" href="css/print.css?v=<?= rand(0, 100000); ?>"/>
+<link rel="stylesheet" media="print" href="css/paper.min.css?v=<?= rand(0, 100000); ?>"/>

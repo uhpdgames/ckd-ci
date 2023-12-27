@@ -1,0 +1,45 @@
+User-agent: *
+
+Disallow: /cgi-bin
+
+Disallow: /admin
+
+Disallow: /meeting
+
+Disallow: /paging_ajax
+
+Disallow: /ajax
+
+Disallow: /caches
+
+Disallow: /libraries
+
+Disallow: /logs
+
+Disallow: /sources
+
+Disallow: /templates
+
+Disallow: /watermark
+
+Sitemap: https://ckdvietnam.com/seo/sitemap.xml
+
+
+
+User-agent: adsbot-google
+
+Disallow: /checkout
+
+Disallow: /checkouts
+
+Disallow: /carts
+
+Disallow: /orders
+
+Disallow: /discount/*
+
+
+
+User-agent: Nutch
+
+Disallow: /

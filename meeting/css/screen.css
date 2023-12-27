@@ -1,0 +1,77 @@
+.overlay{
+    background: none;
+}
+.meeting .th-today {
+    text-align: center;
+    background-color: #fff;
+    color: #000;
+    font-style: italic;
+    font-weight: bold;
+    position: relative;
+    margin: 0;
+    padding: 0 10px;
+    height: 100%;
+}
+
+.meeting tbody td:nth-child(2), .meeting tbody td:nth-child(1) {
+    padding: 15px;
+    font-weight: 500;
+}
+
+body {
+    height: auto;
+    width: 100vw;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    overflow-x: hidden;
+
+}
+
+.meeting {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-size: 12px;
+}
+
+.btn-pdf {
+    text-align: left;
+    display: block;
+    /*position: absolute;*/
+    left: 0.5rem;
+    top: .55rem;
+}
+
+.ignorePDF > * {
+    margin: 0;
+}
+
+table {
+    table-layout: auto;
+    /*max-width: 98vw;
+    min-width: 98vw;
+    width: 98vw;*/
+}
+
+.meeting tbody .td-attention {
+    width: auto;
+}
+
+
+.meeting .td-attention {
+    width: auto;
+}
+
+.meeting .td-worked, .meeting .td-worked .more-input {
+    width: auto;
+}
+
+.meeting .td-work, .meeting .td-work .more-input {
+    width: auto;
+}

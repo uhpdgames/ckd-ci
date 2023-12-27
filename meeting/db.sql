@@ -1,0 +1,1 @@
+CREATE TABLE `ckdcosviet_db`.`table_task` ( `id` INT NOT NULL AUTO_INCREMENT , `meeting_content` LONGTEXT NULL , `attention` LONGTEXT NULL , `worked` LONGTEXT NULL , `work` LONGTEXT NULL , `date_created` DATETIME NULL , `date_updated` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
