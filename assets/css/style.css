@@ -3058,17 +3058,7 @@ div.dmsp ul li:hover ul {
 	min-height: auto;
 }
 
-.loc {
-	gap: 10px;
-	display: flex;
-	align-items: center;
-	flex-flow: wrap;
-	list-style: none;
-	clear: both;
 
-	justify-content: center;
-	margin: 1.25rem 0;
-}
 
 .loc select, .loc input, .loctatca select {
 	color: #333333;

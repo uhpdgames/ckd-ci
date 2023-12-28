@@ -34,7 +34,7 @@
 	$mucgia = $d->rawQuery("select ten$lang as ten, tenkhongdauvi, tenkhongdauen,id, gia1, gia2 from #_news where type = ? and hienthi > 0 order by stt,id desc", array('muc-gia'));
 	?>
 
-	<div class="loc">
+	 <!-- <div class="loc">
 		<?php if ($deviceType == 'computer') { ?>
 			<select name="tatca" id="tatca">
 				<option value=""><?= getLang('tatcasanpham') ?></option>
@@ -77,7 +77,7 @@
 				<option value="<?= $v['gia1'] ?>-<?= $v['gia2'] ?>"><?= $v['ten'] ?></option>
 			<?php } ?>
 		</select>
-	</div>
+	</div> -->
 
 
 <?php endif; ?>
