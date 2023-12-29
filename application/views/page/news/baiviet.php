@@ -41,4 +41,3 @@
 		</div>
 	<?php endif; ?>
 </div>
-<?php getCSSScript('statis_page');?>

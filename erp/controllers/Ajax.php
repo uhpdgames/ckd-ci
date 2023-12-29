@@ -6,9 +6,9 @@ class Ajax extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-        if (!$this->input->is_ajax_request() && $this->uri->segment(2) != 'upload_image') {
+      /*  if (!$this->input->is_ajax_request() && $this->uri->segment(2) != 'upload_image') {
             exit('No direct script access allowed');
-        }
+        }*/
       //  if ($this->session->userdata('logged_in') != true) {
            // my_redirect();
        // }
@@ -376,13 +376,20 @@ class Ajax extends MY_Controller
 		$data = $this->input->post();
 
 		foreach ($data as $key=> &$item){
-			if(empty($item)){
+			if(empty($item) && $item !=0){
 				unset($data[$key]);
 			}
 		}
 
 		unset($data['table']);
 		unset($data['id']);
+
+		if(isset($data['start'])){
+			$data['start'] = datetotime($data['start']);
+		}
+		if(isset($data['end'])){
+			$data['end'] = datetotime($data['end']);
+		}
 
 
 		/*if (!$table || !$id || !$field) {

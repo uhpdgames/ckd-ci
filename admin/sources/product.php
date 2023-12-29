@@ -295,16 +295,32 @@
 
 		/* Post dữ liệu */
 		$data = (isset($_POST['data'])) ? $_POST['data'] : null;
+
+
+
 		if($data)
 		{
             if(isset($_FILES['gift'])){
-                foreach ($_FILES['gift'] as $ss => $f){
-                    $file_name = $func->uploadName($f["name"]);
-                    if($photo = $func->uploadImage("gift", $config['product'][$type]['img_type'], UPLOAD_PRODUCT,$file_name))
-                    {
-                        $data['gift']['image'][$ss] = $photo;
-                    }
-                }
+
+				$files = $_FILES['gift'];
+				$file_count = count($files['name']);
+
+				// validation
+
+				// move the files
+				for($i = 0; $i < $file_count; $i++) {
+					$filename = $files['name'][$i];
+					$tmp = $files['tmp_name'][$i];
+
+					$_FILES[$file]['name'] = $newname . '.' . $ext;
+					$filepath = $func->uploadName($filename);
+					$folder = UPLOAD_PRODUCT;
+
+					if ( move_uploaded_file($tmp, $folder . $filepath)) {
+						$data['gift']['stt'][$i] = $i;
+						$data['gift']['image'][$i] = $filepath;
+					}
+				}
             }
 
 			foreach($data as $column => $value)
@@ -319,6 +335,7 @@
 					$data[$column] = htmlspecialchars($value);
 				}			
 			}
+//echo '<pre>'; var_dump($data);die;
 
             if(isset($data['khuyenmai_ngayhethan'])){
                 $data['khuyenmai_ngayhethan'] = strtotime($data['khuyenmai_ngayhethan']);

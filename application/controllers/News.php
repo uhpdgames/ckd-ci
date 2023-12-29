@@ -240,7 +240,8 @@ class News extends MY_Controller
 		$title_crumb = @$item['ten'];
 		$noidung = @$item['noidung'];
 
-		$params = array($this->com);
+		$type = $this->uri->segment(1) ?? 'su-kien';
+		$params = array($type);
 		$where = " noibat = 1 and type = ? and hienthi > 0";
 
 		$sql = "select id, ten$lang as ten, tenkhongdauvi, tenkhongdauen, photo, ngaytao, mota$lang as mota, id_list,icon from #_news where $where order by ngaytao desc limit 0,10";

@@ -4,6 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller
 {
+
+	public $gg_client;
+	public $gg_token;
+	
 	public $data;
 	public $current_lang;
 	public $sluglang = 'tenkhongdau';
@@ -38,7 +42,10 @@ class MY_Controller extends CI_Controller
 
 		$d = new PDODb($info_db);
 		$cache = new FileCache($d);
-		//$statistic = new Statistic($d, $cache);
+		$statistic = new Statistic($d, $cache);
+
+		$statistic->getCounter();
+		$statistic->getOnline();
 
 		$seo = new Seo($d);
 
@@ -239,4 +246,62 @@ class MY_Controller extends CI_Controller
 			'đây là test email'
 		);
 	}
+
+
+
+
+
+	public function auth(){
+		require_once APPPATH . 'libraries/google_api/vendor/autoload.php';
+		$key = SHAREDPATH . 'json/google_key.json';
+		$this->gg_client = new Google\Client();
+
+		$this->gg_client->setAuthConfig($key);
+		$this->gg_client->addScope('https://www.googleapis.com/auth/indexing');
+
+		return $this->gg_client->authorize();
+
+		//return $httpClient;
+
+		#$endpoint = 'https://indexing.googleapis.com/v3/urlNotifications:publish';
+		#$redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+		#$this->gg_client->setRedirectUri($redirect_uri);
+		#$response = $httpClient->post($endpoint, [ 'body' => $content ]);
+		//$status_code = $response->getStatusCode();
+	}
+
+	function token()
+	{
+		require_once APPPATH . 'libraries/google_api/vendor/autoload.php';
+		if (isset($_GET['code'])) {
+			$this->gg_token = $this->gg_client->fetchAccessTokenWithAuthCode($_GET['code']);
+		}
+
+	}
+
+	/**
+	 * @param $url
+	 * @param $type : URL_UPDATED , URL_DELETED
+	 *
+	 */
+	function update_google($url, $type)
+	{
+		$auth = $this->auth();
+
+		$endpoint = 'https://indexing.googleapis.com/v3/urlNotifications:publish';
+
+		// Define contents here. The structure of the content is described in the next step.
+
+		$content = '{
+		  "url": '.$url.',
+		  "type": '.$type.'
+		}';
+
+		$response = $auth->post($endpoint, [ 'body' => $content ]);
+		$status_code = $response->getStatusCode();
+
+
+		return $status_code;
+	}
 }
+

@@ -465,92 +465,98 @@
 
 	    <div class="card card-primary card-outline text-sm">
             <div class="card-header">
-                <h3 class="card-title">Thông tin quà tặng đi kèm</h3>
+                <h3 class="card-title">Thông tin quà tặng đi kèm
+				 </h3>
                 <div class="card-tools">
                 	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+
                 </div>
             </div>
+			<?php
+			$hasGift = false;
+			$gifts = @json_decode($item['gift']?? '');
+			if(!empty($gifts) && count($gifts) > 0){
+				$gifts = (Array)$gifts;
+				$hasGift = true;
+			}
+
+			?>
+
             <div class="card-body table-responsive p-">
 				<div class="form-group">
-                    <label for="hienthi" class="d-inline-block align-middle mb-0 mr-2">Hiển thị:</label>
+                    <label for="hienthi-gift" class="d-inline-block align-middle mb-0 mr-2">Hiển thị:</label>
                     <div class="custom-control custom-checkbox d-inline-block align-middle">
-                        <input type="checkbox" class="custom-control-input hienthi-checkbox" name="data[hienthi]" id="hienthi-checkbox" <?php /*=(!isset($item['hienthi']) || $item['hienthi']==1)?'checked':''*/?>>
-                        <label for="hienthi-checkbox" class="custom-control-label"></label>
+                        <input type="checkbox" class="custom-control-input hienthi-gift" <?php echo $hasGift == true ? 'checked' : ''?>  id="hienthi-gift">
+                        <label for="hienthi-gift" class="custom-control-label"></label>
                     </div>
                 </div>
 
+
                 <div>
-                    <a href="javascript:void(0)" class="btn btn-info" id="btn-addMore" onclick="add_more();">Thêm dòng</a>
+                    <a href="javascript:void(0)" class="btn btn-info" id="btn-addMore" onclick="add_more();">Thêm một dòng quà tặng</a>
+                   <?php if($hasGift):?>
+                    <a href="javascript:void(0)" class="btn btn-danger" id="btn-removeAll" onclick="remove_all();">Xóa tất cả quà tặng</a>
+				   <?php endif;?>
                 </div>
 
+				<br>
+				<em style="color:deeppink">
+					<xmp>Định dạng trong ô mô tả quà tặng kèm theo</xmp>
+					<xmp>-Xuống dòng bởi dấu: <br/></xmp>
+					<xmp>-Thêm đậm chữ: <strong></xmp>
 
-                <table width="100%" class="table table-hover" id="myTable">
+				</em>
+                <table width="100%" class="table table-hover" id="table-gift">
 
                     <thead>
                     <tr>
-                        <th>Hình ảnh</th>
-                        <th>Nội dung</th>
-                        <th>Mô tả</th>
-                        <th>Chức năng</th>
+                        <th width="5%">Hình ảnh</th>
+                        <th width="60%">Mô tả quà tặng</th>
+                        <th width="30%">Tên quà tặng</th>
+                        <th width="5%">#</th>
                     </tr>
                     </thead>
 
                     <tbody class="gift-AddMore">
 
-                    <?php
-/*
-                    $gifts = array();
-                    if(!empty($item['gift'])){
-                        $gifts = (array)json_decode($item['gift']);
 
-                    }
 
-                    if(is_array($gifts) && count($gifts))
-                    {
-                        for($i = 0 ; $i < count($gifts) ;$i++){
-                            */?>
+					<?php
+
+
+					if(is_array($gifts) && count($gifts))
+					{
+					for($i = 0 ; $i < count($gifts['image']) ;$i++){
+					$stt = '';
+					$name_image = $gifts['image'][$i];
+					$img = UPLOAD_PRODUCT_L . $name_image;
+					$desc = $gifts['desc'][$i] ?? "";
+					$hienthi = $gifts['hienthi'][$i] ?? false;
+						$name = $gifts['name'][$i] ?? "";
+					?>
                             <tr>
                                 <td>
-                                    <input type="file" name="gift[]" multiple="multiple" accept="image/*">
+                                    <input onchange="loadFile(event, this)" type="file" name="gift[<?=$stt?>]" multiple="multiple" accept="image/*">
+									<img width="100" src="<?= '../'.$img?>" />
+									<input type="hidden" value="<?=$name_image?>" name="data[gift][image][<?=$stt?>]">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control" name="data[gift][desc][<?=$stt?>]" id="desc" placeholder="Mô tả" value="<?=$desc?>">
+                                </td>
+								<td>
+
+									<input type="text" class="form-control" name="data[gift][name][<?=$stt?>]" id="name" placeholder="Tên quà tặng" value="<?=$name?>">
+
+
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="data[gift][name][<?php /*=$i*/?>]" id="name" placeholder="Tên quà tặng" value="<?php /*=$gifts['name'][$i]*/?>">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" name="data[gift][desc][<?php /*=$i*/?>]" id="desc" placeholder="Mô tả" value="<?php /*=$gifts['desc'][$i]*/?>">
-                                </td>
-                                <td>
-                                    <a class="text-danger tr-delete" title="Xóa" href="javascript:void(0)"><i class="fas fa-trash-alt"></i></a>
+                                    <?php if($i !=0):?>
+									<a class="text-danger tr-delete" title="Xóa" href="javascript:void(0)"><i class="fas fa-trash-alt"></i></a>
+                                    <?php endif;?>
                                 </td>
                             </tr>
-
-                            <?php
-/*                    }
-
-
-                    }else{
-                        */?>
-
-                        <tr>
-                            <td>
-                                <input type="file" name="gift[]" multiple="multiple" accept="image/*">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" name="data[gift][name][]" id="name" placeholder="Tên quà tặng" value="">
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" name="data[gift][desc][]" id="desc" placeholder="Mô tả" value="">
-                            </td>
-                            <td>
-                                <a class="text-danger tr-delete" title="Xóa" href="javascript:void(0)"><i class="fas fa-trash-alt"></i></a>
-                            </td>
-                        </tr>
-
-                        <?php
-/*                    }
-
-
-                    */?>
+<?php } }?>
 
                     </tbody>
                 </table>
@@ -565,9 +571,7 @@
         		<div class="card-header">
         			<h3 class="card-title text-left">Bộ sưu tập <?=$config['product'][$type]['title_main']?>
                         <br>
-                    <em style="color:deeppink">Cảnh báo!!! úp hình nên đồng bộ chung MỘT kích thước
-                        <br> VD: úp bộ sưu tập với hình 1000x1000 px thì tất cả hình phải là 1000x1000 px
-                        <br>úp hình với kích thước 600x600 px thì tất cả hình phải là 600x600 px</em>
+                    <em style="color:deeppink"> Kích thước yêu cầu 1000 x 1000 px</em>
                     </h3>
         			<div class="card-tools">
         				<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -708,18 +712,25 @@
         });
     }
     updatedelete();
+	function remove_all(){
+		$html = `<input type="hidden" class="form-control" name="data[gift][]" value="">`;
+		$('.gift-AddMore').html($html);
+	}
     function add_more(){
-        $html = `
+	    var stt = $('#table-gift tbody tr').length;
+
+	    $html = `
                     <tr>
                         <td>
-                            <input type="file" name="gift[]" multiple="multiple" accept="image/*">
+                            <input onchange="loadFile(event, this)" type="file" name="gift[]" multiple="multiple" accept="image/*">
                         </td>
-                        <td>
-                            <input type="text" class="form-control" name="data[gift][name][]" id="name" placeholder="Tên quà tặng" value="">
-                        </td>
+
                         <td>
                             <input type="text" class="form-control" name="data[gift][desc][]" id="desc" placeholder="Mô tả" value="">
                         </td>
+<td>
+<input type="text" class="form-control" name="data[gift][name][]" id="name" placeholder="Tên quà tặng" value="">
+</td>
                         <td>
                             <a class="text-danger tr-delete" title="Xóa" href="javascript:void(0)"><i class="fas fa-trash-alt"></i></a>
                         </td>
@@ -728,4 +739,56 @@
         $('.gift-AddMore').append($html);
         updatedelete();
     }
+</script>
+
+
+<script>
+	$(document).ready(function(){
+		$table_gift = $('#table-gift');
+
+		$('#hienthi-gift').val(this.checked);
+
+		$('#hienthi-gift').change(function() {
+			if(this.checked) {
+				removeGiftAttr()
+			}else{
+				addGiftAttr()
+			}
+		});
+
+		function removeGiftAttr(){
+			$('#btn-addMore').removeClass('disabled');
+			$table_gift.find('input').removeAttr('disabled').removeClass('disabled');
+		}
+		function addGiftAttr(){
+			$('#btn-addMore').addClass('disabled');
+			$table_gift.find('a').attr('disabled', 'disabled').addClass('disabled');
+			$table_gift.find('input').attr('disabled', 'disabled').addClass('disabled');
+		}
+
+		if($('#hienthi-gift').is(':checked')){
+			removeGiftAttr()
+		}else{
+			addGiftAttr()
+		}
+
+		setTimeout(function (){
+
+
+		}, 5000)
+	})
+
+
+	function loadFile(event, _this) {
+		var td = $(_this).closest('td');
+		td.find('img').remove();
+
+		var img = document.createElement('img');
+		img.setAttribute('width', '100px')
+		img.src = URL.createObjectURL(event.target.files[0])
+
+
+		td.append(img)
+	}
+
 </script>

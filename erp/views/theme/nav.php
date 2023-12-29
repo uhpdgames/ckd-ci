@@ -30,7 +30,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="seo">
+					<a href="seoweb">
 						<i class="iconsminds-idea-2"></i> SEO
 					</a>
 				</li>

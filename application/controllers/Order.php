@@ -149,8 +149,8 @@ class Order extends MY_Controller
             {
                 $config = [
                     "app_id" => 3057,
-                    "key1" => "T7GPrP9XTH6e9Ls993U2sGbHSHYw6Vqi",
-                    "key2" => "30y698aCwcM5jYpFYC0X4PFOol4IYojh",
+                    "key1" => "rSoNemQmOqA09SLn7s6zfobSDQ0uwvjf",
+                    "key2" => "qRGT0cvOGOZ16fOmjFTKQdI7QLIRSTcA",
                     //"endpoint" => "https://sb-openapi.zalopay.vn/v2/create", //Sanbox
                     "endpoint" => "https://openapi.zalopay.vn/v2/create", //Real
                 ];
@@ -205,7 +205,7 @@ class Order extends MY_Controller
                 $resp = file_get_contents($config["endpoint"], false, $context);
                 $result = json_decode($resp, true);
 
-
+//qq($result);die;
                 if (!empty($result) and $result['return_code'] == 1 and $result['return_message'] == 'Giao dịch thành công') {
                     redirect($result['order_url']);
                 } else {

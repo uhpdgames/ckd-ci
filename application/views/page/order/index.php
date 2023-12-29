@@ -2,16 +2,18 @@
 
 
 $magiamgia = '';
-if(!empty($voucher)){
+if (!empty($voucher)) {
 
 	$discount = $voucher['discount_percentage'];
 	$magiamgia = $voucher['magiamgia'];
 }
 
 $my_city = array();
-if(@$this->userInfo['id']){
+if (@$this->userInfo['id']) {
 	$my_city = $d->rawQueryOne("select city,district,wards from #_member where id=?", array($this->userInfo['id']));
 }
+
+$qua_tang = $this->session->userdata('has_quatang');
 
 
 ?>
@@ -132,7 +134,7 @@ if(@$this->userInfo['id']){
 						<?php } ?>
 						<?php
 
-						if ($tui_giay =='true') {
+						if ($tui_giay == 'true') {
 
 							?>
 							<div class="procart d-flex align-items-center justify-content-between">
@@ -142,12 +144,19 @@ if(@$this->userInfo['id']){
 								<div class="pic-procart">
 									<img src="<?= MYSITE ?>assets/images/paper_bag.webp" style="width: 150px"
 										 sizes="150px" height="150px" width="150px">
+									<a class="current-dels text-decoration-none">
+										<i class="fa fa-times-circle"></i>
+										<span><?= getLang('xoa') ?></span>
+									</a>
 								</div>
+
 
 								<div class="info-procart d-flex align-items-center">
 									<h3 class="name-procart">
 										<a class="text-decoration-none"
 										   title="Túi giấy">Túi giấy</a>
+
+
 									</h3>
 								</div>
 
@@ -165,6 +174,12 @@ if(@$this->userInfo['id']){
 							<?php
 						}
 						?>
+
+						<?php
+						if (is_array($qua_tang) && count($qua_tang) > 0) {
+							echo html_gifts();
+						}
+						?>
 					</div>
 					<div class="money-procart">
 						<?php if ($config['order']['ship']) { ?>
@@ -179,12 +194,12 @@ if(@$this->userInfo['id']){
 								<p class="total-price load-price-ship">0đ</p>
 							</div>
 						<?php } ?>
-						<?php if($magiamgia !=''):?>
-						<div class="total-procart discount align-items-center justify-content-between"
-							 style="display: none;">
-							<p>Giảm giá:</p>
-							<p class="total-price load-price-voucher">0đ</p>
-						</div>
+						<?php if ($magiamgia != ''): ?>
+							<div class="total-procart discount align-items-center justify-content-between"
+								 style="display: none;">
+								<p>Giảm giá:</p>
+								<p class="total-price load-price-voucher">0đ</p>
+							</div>
 						<?php endif; ?>
 						<div class="total-procart d-flex align-items-center justify-content-between">
 							<p><?= getLang('tongtien') ?>:</p>
@@ -195,7 +210,8 @@ if(@$this->userInfo['id']){
 						<input type="hidden" class="price-ship" name="price-ship">
 						<input type="hidden" class="price-ship_code" name="ship_code">
 
-						<input type="hidden" name="price-total" class="price-total" value="<?= $cart->get_order_total() ?>">
+						<input type="hidden" name="price-total" class="price-total"
+							   value="<?= $cart->get_order_total() ?>">
 					</div>
 
 				</div>
@@ -306,7 +322,7 @@ if(@$this->userInfo['id']){
 
 							<?php
 							if (isset($this->userInfo['id'])) {
-								$user_dc = $d->rawQuery("select tenvi from #_news where id_user='" . @$this->userInfo['id']??0 . "' and type = ? and hienthi > 0", array('user'));
+								$user_dc = $d->rawQuery("select tenvi from #_news where id_user='" . @$this->userInfo['id'] ?? 0 . "' and type = ? and hienthi > 0", array('user'));
 								?>
 								<!--<p class="c_doidiachi tdtt">+ <?php /*= getLang('thaydoi') */ ?></p>-->
 								<div class="thongtin_dc" id="hidden-content">
@@ -330,26 +346,27 @@ if(@$this->userInfo['id']){
 									   value="<?= (isset($_SESSION[$login_ctv]['code'])) ? $_SESSION[$login_ctv]['code'] : '' ?>"
 								/>
 							</div>
-							<?php if($magiamgia !=''):?>
-							<div class="input-cart ">
-								<input type="text" class="form-control" id="magiamgia" onblur="updateVoucher();"
-									   name="magiamgia"
-									   placeholder="<?= getLang('text_voucher_title') ?>"
-									   value=""
-								/>
+							<?php if ($magiamgia != ''): ?>
+								<div class="input-cart ">
+									<input type="text" class="form-control" id="magiamgia" onblur="updateVoucher();"
+										   name="magiamgia"
+										   placeholder="<?= getLang('text_voucher_title') ?>"
+										   value=""
+									/>
 
-								<input type="hidden" value="" name="coupon_id" id="coupon_id">
-								<input type="hidden" value="" name="giadagiam" id="giadagiam">
-								<div class="invalid-feedback magiamgia"></div>
+									<input type="hidden" value="" name="coupon_id" id="coupon_id">
+									<input type="hidden" value="" name="giadagiam" id="giadagiam">
+									<div class="invalid-feedback magiamgia"></div>
 
-                                <div class="ckd-discount-choose-coupons" style="display: none;">
-                                    <div id="list_short_coupon">
-                                        <span><span onclick="them_magiamgia(this)" data-code="<?=@$magiamgia??''?>">Giảm <?=@$discount ?? 10?>%</span></span>
-                                    </div>
-                                </div>
+									<div class="ckd-discount-choose-coupons" style="display: none;">
+										<div id="list_short_coupon">
+											<span><span onclick="them_magiamgia(this)"
+														data-code="<?= @$magiamgia ?? '' ?>">Giảm <?= @$discount ?? 10 ?>%</span></span>
+										</div>
+									</div>
 
 
-							</div>
+								</div>
 							<?php endif; ?>
 						</div>
 						<input type="submit" class="btn-cart btn btn-primary btn-lg btn-block" name="thanhtoan"
@@ -366,7 +383,7 @@ if(@$this->userInfo['id']){
 			<?php } ?>
 		</div>
 
-		<input type="hidden" value="<?= @$this->userInfo['id']??0 ?>"
+		<input type="hidden" value="<?= @$this->userInfo['id'] ?? 0 ?>"
 			   name="uid" id="uid">
 	</form>
 
@@ -389,6 +406,7 @@ if(@$this->userInfo['id']){
 		flex-wrap: wrap;
 		color: #338dbc;
 	}
+
 	.ckd-discount-choose-coupons > div:first-child {
 		flex: 0 0 100%;
 		margin-top: 10px;
@@ -404,6 +422,7 @@ if(@$this->userInfo['id']){
 		flex-wrap: wrap;
 		color: #338dbc;
 	}
+
 	.ckd-discount-choose-coupons #list_short_coupon {
 		display: -webkit-flex;
 		display: flex;
@@ -437,6 +456,7 @@ if(@$this->userInfo['id']){
 		border-radius: 50%;
 		transform: translateY(-50%);
 	}
+
 	.ckd-discount-choose-coupons #list_short_coupon > span span {
 		border: 1px solid #338dbc;
 		padding: 5px 10px;
@@ -465,26 +485,26 @@ if(@$this->userInfo['id']){
 <script>
 	var current_price = $('.price-total').val() || '<?=$cart->get_order_total() ?>';
 	var current_price_label = '<?= format_money($cart->get_order_total()) ?>';
-	var text_voucher = '<?=getLang('text_voucher') .@$vouchers['discount_percentage']. '%' ?>';
+	var text_voucher = '<?=getLang('text_voucher') . @$vouchers['discount_percentage'] . '%' ?>';
 
-<?php
+	<?php
 	if(is_array($my_city) && count($my_city) > 0){
 	?>
 	var id_city = '<?=$my_city['city']?>';
 	var id_district = '<?=$my_city['district']?>';
 	var id_wards = '<?=$my_city['wards']?>';
 
-	$(function() {
+	$(function () {
 		load_district(id_city);
 		//load_wards(id_district)
 
-		setTimeout(function (){
+		setTimeout(function () {
 			$("#city").val(id_city);
 			$("#district").val(id_district).change();
 			load_wards(id_district);
 		}, 500);
 
-		setTimeout(function (){
+		setTimeout(function () {
 			$("#wards").val(id_wards).change();
 			$('.ckd-discount-choose-coupons').show();
 		}, 1500);
@@ -493,11 +513,24 @@ if(@$this->userInfo['id']){
 
 	<?php
 	}
-?>
+	?>
 
+	$(document).ready(function () {
+		$('.current-dels').on('click', function () {
 
+			$(this).closest('.procart').remove();
 
+			$.ajax({
+				type: "post",
+				url: site_url() + "ajax/sethasTuiGiay",
+				data: {has_tuigiay: false},
+				beforeSend: function () {
+				},
+			})
+
+		})
+	})
 
 
 </script>
-<script defer type="application/javascript" src="<?=MYSITE?>assets/js/order.js?v=<?=time()?>"></script>
+<script defer type="application/javascript" src="<?= MYSITE ?>assets/js/order.js?v=<?= time() ?>"></script>

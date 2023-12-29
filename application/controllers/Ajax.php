@@ -25,6 +25,31 @@ class Ajax extends MY_Controller
         $this->session->set_userdata('has_tuigiay', $tui);
     }
 
+   function sethasQuaTang()
+    {
+        $qua = getRequest('has_quatang');
+        $id = getRequest('id');
+        $img = getRequest('img');
+
+
+
+		if(!empty($qua)){
+			$data = $this->session->userdata('has_quatang');
+			if(!is_array($data)) $data = array();
+
+			$data[$id]  = array(
+				'name'=>$qua,
+				'img'=>$img,
+			);
+			$this->session->set_userdata('has_quatang', $data);
+		}
+
+
+
+
+       // $this->session->set_userdata('has_quatang', $qua);
+    }
+
 
     function checkEmail()
     {
@@ -722,6 +747,8 @@ from #_coupons where type = ? and uid = ? and deleted = 0 limit 0,1",
             $data = array('text_dagiam'=>$text_dagiam, 'giadagiam'=>$dagiam,'max' => $max, 'temp' => $temp, 'tempText' => $tempText, 'total' => $total, 'totalText' => $totalText);
 
             echo json_encode($data);
+
+
         } else if ($cmd == 'ship-cart') {
             $shipData = array();
             $shipPrice = 0;
@@ -875,6 +902,8 @@ from #_coupons where type = ? and uid = ? and deleted = 0 limit 0,1",
                                     </div>
                                 <?php }
                             } ?>
+
+                       <?=html_gifts()?>
                         </div>
                         <div class="money-procart">
                             <div class="total-procart d-flex align-items-center justify-content-between">

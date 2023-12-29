@@ -537,6 +537,117 @@ function getLang($keyCode = 'welcome_message')
 	return $CI->lang->line($keyCode);
 }
 
+
+function getSetting()
+{
+	$ci = &get_instance();
+	return $ci->data['setting'];
+}
+
+function getOptSetting()
+{
+	$ci = &get_instance();
+	return $ci->data['optsetting'];
+}
+
+function getCurrentPageURL()
+{
+	$pageURL = 'http';
+	if (array_key_exists('HTTPS', $_SERVER) && $_SERVER["HTTPS"] == "on") $pageURL .= "s";
+	$pageURL .= "://";
+	$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+	$urlpos = strpos($pageURL, "?p");
+	$pageURL = ($urlpos) ? explode("?p=", $pageURL) : explode("&p=", $pageURL);
+	return $pageURL[0];
+}
+
+function html_gifts()
+{
+	$html = '';
+
+	$ci = &get_instance();
+
+	$gifts = $ci->session->userdata('has_quatang');
+	//qq($gifts);
+	if (empty($gifts)) {
+		return $html;
+	}
+
+
+	$html .= '<h5 class="modal-title title-cart py-2">Quà tặng kèm theo</h5>';
+
+	$max = (isset($_SESSION['cart'])) ? count($_SESSION['cart']) : 0;
+
+	$has_gift = false;
+	for ($i = 0; $i < $max; $i++) {
+
+		$productid = $_SESSION['cart'][$i]['productid'];
+
+		if (!empty($gifts[$productid])) {
+			$has_gift = true;
+
+			$gift = $gifts[$productid];
+			$img = UPLOAD_PRODUCT_L . $gift['img'];
+			$name = $gift['name'];
+
+			$html .= '<div class="procart m-0 p-2 d-flex align-items-start justify-content-between">';
+			$html .= '<div class="pic-procart">';
+			$html .= "<img class='img-fluid' src='{$img}' />";
+			$html .= '</div>';
+
+			$html .= '<div class="info-procart"> ';
+			$html .= "<div class='name-procart' >$name</div></div>";
+
+			$html .= '<div class="quantity-procart">x1</div>';
+			$html .= '<div class="price-procart price-new-cart">0đ</div>';
+
+
+			$html .= '</div>';
+		}
+	}
+
+	if (!$has_gift) {
+		$html = '';
+	}
+
+	return $html;
+}
+
+function share_link()
+{
+
+	echo '<script async src="https://static.addtoany.com/menu/page.js"></script>';
+
+	$current_page = getCurrentPageURL();
+	$optsetting = getOptSetting();
+	$zalo = !empty($optsetting['oaidzalo']) ? $optsetting['oaidzalo'] : '579745863508352884';
+
+	echo <<<HTML
+<div class="a2a_kit a2a_kit_size_32 a2a_default_style share" data-a2a-title="Share">
+<a class="a2a_dd" href="$current_page"></a>
+<a class="a2a_button_facebook"></a>
+<a class="a2a_button_facebook_messenger"></a>
+<div class="zalo-share-button" data-href="$current_page" data-oaid="$zalo" data-layout="3" data-color="blue" data-customize=false>
+</div></div>
+<style type="text/css">.a2a_kit{height: 50px}.a2a_svg{height: 30px !important}</style>
+HTML;
+
+	return;
+	echo <<<HTML
+
+<div class="share">
+<div class="share-btn">
+<a class='share-facebook' href="http://www.facebook.com/share.php?u=$current_page" target="_blank"
+>
+<i class="fab fa-facebook-f"></i>
+</a>
+</div>
+</div>
+HTML;
+
+}
+
+
 function toWebp($filename)
 {
 	return $filename;
@@ -613,10 +724,10 @@ function get_product_slick($truyvan, $sluglang, $slide = false)
 				$not_slide .= '<p class="mota catchuoi3">' . $mota . '</p>';
 			}
 
-		 $s = rand(1,5);
+			$s = rand(1, 5);
 			$start = ' <div class="m-p p-0"><span class="star-rating">';
-			for($ii = 1; $ii <=5; $ii++){
-				$start .= '<label><i class="fa-solid fa-star '. ($ii <= $s ? 'active' : ''). '"></i></label>';
+			for ($ii = 1; $ii <= 5; $ii++) {
+				$start .= '<label><i class="fa-solid fa-star ' . ($ii <= $s ? 'active' : '') . '"></i></label>';
 			}
 			$start .= '</span></div>';
 
@@ -720,6 +831,11 @@ function get_posts($sluglang, $truyvan, $class, $thumb = '', $desc = 1, $day = 0
 
 function createSitemap($d, $com = '', $type = '', $field = '', $table = '', $time = '', $changefreq = '', $priority = '', $lang = 'vi', $orderby = '', $menu = true)
 {
+
+
+
+
+
 	$config_base = site_url();
 	$urlsm = '';
 	$ci = &get_instance();
@@ -758,4 +874,19 @@ function createSitemap($d, $com = '', $type = '', $field = '', $table = '', $tim
 			echo '</url>';
 		}
 	}
+
+
+}
+
+function checkWebsite($url)
+{
+	$file_headers = @get_headers($url);
+
+	if (empty($file_headers) || $file_headers[0] == 'HTTP/1.0 404 Not Found' || $file_headers[0] == 'HTTP/1.1 404 Not Found') {
+		$exists = false;
+	} else {
+		$exists = true;
+	}
+
+	return $exists;
 }

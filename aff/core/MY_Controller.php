@@ -60,8 +60,8 @@ class MY_Controller extends CI_Controller
 			$seo->setSeo('title', $seoInfo['title' . $this->current_lang]);
 			$seo->setSeo('description', $seoInfo['description' . $this->current_lang]);
 		}
-
-		$this->_Affiliate = new Affiliate($d);
+		$this->load->library('congtacvien');
+		$this->_Affiliate = new Congtacvien($d);
 		if (!empty($this->info['id'])) {
 			$this->_Affiliate->setUserUid($this->info['id']);
 		}

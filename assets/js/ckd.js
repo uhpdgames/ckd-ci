@@ -980,7 +980,7 @@ NN_FRAMEWORK.Cart = function () {
 			var id = $(this).data("id");
 			var action = $(this).data("action");
 			var quantity = ($(".qty-pro").val()) ? $(".qty-pro").val() : 1;
-			//alert(4)
+			
 			if (id) {
 				$.ajax({
 					url: site_url() + "ajax/ajax_cart",
@@ -994,8 +994,13 @@ NN_FRAMEWORK.Cart = function () {
 						size: size,
 						quantity: quantity
 					},
+					complete:function (result){
+					
+					},
 					success: function (result) {
-						if (action == 'addnow') {
+						if (action == 'buynow') {
+							window.location = CONFIG_BASE + "gio-hang";
+						}else{
 							$('.count-cart').html(result.max);
 							$.ajax({
 								url: site_url() + "ajax/ajax_cart",
@@ -1010,8 +1015,6 @@ NN_FRAMEWORK.Cart = function () {
 									$('#popup-cart').modal('show');
 								}
 							});
-						} else if (action == 'buynow') {
-							window.location = CONFIG_BASE + "gio-hang";
 						}
 					}
 				});
@@ -1279,22 +1282,22 @@ $(window).load(function () {
 });
 
 $(document).ready(function () {
-	
 	updateMorePrice();
-	
 	NN_FRAMEWORK.Search();
-	
 	NN_FRAMEWORK.Cart();
-	
 	
 	$(document).scroll(function () {
 		var scroll = $(this).scrollTop();
 		var topDist = $("#header").position();
-		if (scroll > 99) { //99
-			$('#header').addClass('fixed')
-		} else {
-			$('#header').removeClass('fixed')
+		
+		if($('#prod').length == 0){
+			if (scroll > 99) { //99
+				$('#header').addClass('fixed')
+			} else {
+				$('#header').removeClass('fixed')
+			}
 		}
+		
 		if (!loading_html && $('#main').length) {
 			console.log('loading');
 			loading_html = true;

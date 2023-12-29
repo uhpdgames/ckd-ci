@@ -1,24 +1,41 @@
 <div class="all_review"></div>
 <?php
-
 $ci = &get_instance();
 $ci->load->library('user_agent');
-$slt = 'style="height: 30rem; width: 100%"';
-?>
+$slt = '';
 
-<?php
+
+ $qua_tang = $ci->session->userdata('has_quatang');
+//$ci->session->unset_userdata('has_quatang');
+
+//echo 'sss' ; var_dump($qua_tang);die;
+
+ $tui_giay = $ci->session->userdata('has_tuigiay');
+if ($tui_giay == 'true') {
+	$check = 'checked';
+} else {
+	$check = '';
+}
+
+if ($qua_tang == 'true') {
+
+} else {
+
+}
+
+
 
 $num_slider = 1;
 ?>
-
-
 <?= $breadcr; ?>
-<div class="main_fix d-block mb-2" id="details">
-	<!--main_fix-2-->
-	<div class="wp-box" <?= $slt ?> >
-		<div class="row" <?= $slt ?> >
-			<div class="col-12 col-lg-6">
 
+<main class="main_fix d-block mb-2" id="details">
+
+
+	<section>
+		<div class="wp-box" <?= $slt ?> >
+			<div class="row" <?= $slt ?> >
+				<div class="col-12 col-lg-6">
 
 
 					<div class="wp-slider">
@@ -38,8 +55,8 @@ $num_slider = 1;
 												<?php if (is_array($hinhanhsp) && count($hinhanhsp) >
 													0) { ?>
 													<?php foreach ($hinhanhsp as $v) {
-                                                        $num_slider++;
-                                                        ?>
+														$num_slider++;
+														?>
 														<div class="swiper-slide">
 															<div class="slider__image">
 																<img class="cloudzoom center img-fluid"
@@ -98,218 +115,304 @@ $num_slider = 1;
 					</div>
 
 
+					<?php $this->load->view('page/product/review'); ?>
+				</div>
 
-			</div>
+				<div class="col-12 col-lg-6">
+					<div class="brand">
 
-			<div class="col-12 col-lg-6 right-pro-detail infoArea">
-				<div class="brand">
+						<?php
 
-					<?php
-
-					$id_thuonghieu = @$row_detail['id_thuonghieu'] ?? 0;
-					if (!empty($row_detail['id_thuonghieu']) && $row_detail['id_thuonghieu'] > 0) {
-						$name_thuonghieu = $d->rawQueryOne("select ten$lang as ten from #_news where id=$id_thuonghieu");
-						if (!empty($name_thuonghieu) && isset($name_thuonghieu['ten'])) {
-							echo $name_thuonghieu['ten'];
+						$id_thuonghieu = @$row_detail['id_thuonghieu'] ?? 0;
+						if (!empty($row_detail['id_thuonghieu']) && $row_detail['id_thuonghieu'] > 0) {
+							$name_thuonghieu = $d->rawQueryOne("select ten$lang as ten from #_news where id=$id_thuonghieu");
+							if (!empty($name_thuonghieu) && isset($name_thuonghieu['ten'])) {
+								echo $name_thuonghieu['ten'];
+							}
+						} else {
+							echo '<span></span>';
 						}
-					} else {
-						echo '<span></span>';
-					}
 
-					?>
-				</div>
-
-				<p class="headingArea title--detail catchuoi2"><?= $row_detail['ten'] ?></p>
-				<div class="row">
-					<div class="col-4 detail-title cover--detail pb-3"><?= getLang('masp') ?></div>
-					<div
-						class="col-8 cover--detail"><?= (isset($row_detail['masp']) && $row_detail['masp'] != '') ? $row_detail['masp'] : '' ?></div>
-				</div>
-				<div class="row">
-					<div class="col-4 detail-title cover--detail pb-3"><?= getLang('thetich') ?></div>
-					<div
-						class="col-8 cover--detail"><?= (isset($row_detail['thetich']) && $row_detail['thetich'] != '') ? $row_detail['thetich'] : '' ?></div>
-				</div>
-				<div class="row">
-					<div class="col-4 detail-title cover--detail pb-3"><?= getLang('gia') ?></div>
-					<div class="col-8 cover--detail">
-						<?php if ($row_detail['giamoi']) { ?>
-							<span class="price-new-pro-detail"
-								  data-gia="<?= $row_detail['giamoi'] ?>"><?= format_money($row_detail['giamoi']) ?></span>
-							<span class="price-old-pro-detail"><?= format_money($row_detail['gia']) ?></span>
-						<?php } else { ?>
-							<span class="price-new-pro-detail"
-								  data-gia="<?= $row_detail['gia'] ?>"><?= ($row_detail['gia']) ? format_money($row_detail['gia']) : getLang('lienhe') ?></span>
-						<?php } ?>
+						?>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-4 detail-title cover--detail"><?= getLang('soluong') ?></div>
-					<div class="col-4">
-						<div class="attr-content-pro-detail d-block">
-							<div class="quantity-pro-detail">
-								<span class="quantity-minus-pro-detail_2">-</span>
-								<input type="number" class="qty-pro" min="1" value="1" onblur="updateMorePrice()"/>
-								<span class="quantity-plus-pro-detail_2">+</span>
+					<p class="font-weight-bold title--detail catchuoi2"><?= $row_detail['ten'] ?></p>
+					<div class="row">
+						<div class="col-4 detail-title cover--detail pb-1"><?= getLang('masp') ?></div>
+						<div class="col-8 cover--detail"><?= (isset($row_detail['masp']) && $row_detail['masp'] != '') ? $row_detail['masp'] : '' ?></div>
+						<input type="hidden" value="<?= $row_detail['id'] ?? "" ?>" id="product_id" />
+					</div>
+					<div class="row">
+						<div class="col-4 detail-title cover--detail pb-1"><?= getLang('thetich') ?></div>
+						<div
+							class="col-8 cover--detail"><?= (isset($row_detail['thetich']) && $row_detail['thetich'] != '') ? $row_detail['thetich'] : '' ?></div>
+					</div>
+					<div class="row">
+						<div class="col-4 detail-title cover--detail pb-1"><?= getLang('gia') ?></div>
+						<div class="col-8 cover--detail">
+							<?php if ($row_detail['giamoi']) { ?>
+								<span class="price-new-pro-detail"
+									  data-gia="<?= $row_detail['giamoi'] ?>"><?= format_money($row_detail['giamoi']) ?></span>
+								<span class="price-old-pro-detail"><?= format_money($row_detail['gia']) ?></span>
+							<?php } else { ?>
+								<span class="price-new-pro-detail"
+									  data-gia="<?= $row_detail['gia'] ?>"><?= ($row_detail['gia']) ? format_money($row_detail['gia']) : getLang('lienhe') ?></span>
+							<?php } ?>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-4 detail-title cover--detail"><?= getLang('soluong') ?></div>
+						<div class="col-4 mt-1">
+							<div class="d-block">
+
+
+								<div class="quantity-pro-detail">
+									<span class="quantity-minus-pro-detail_2">-</span>
+									<input type="number" class="qty-pro" min="1" value="1" onblur="updateMorePrice()"/>
+									<span class="quantity-plus-pro-detail_2">+</span>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-4">
-						<div class="attr-content-pro-detail-2">
-                            <?php
+						<div class="col-4">
 
-                            $ci = &get_instance();
-                            $tui_giay = $ci->session->userdata('has_tuigiay');
-                            if($tui_giay =='true'){
-                                $check = 'checked';
-                            }else{
-                                $check = '';
-                            }
-                            ?>
-							<input <?=$check?> type="checkbox" name="themtui" class="themtui" id="radio-themtui"/>
-							<label for="radio-themtui"
-								   class="w-100 attr-label-pro-detail-3"><?= getLang('themtui') ?></label>
+							<div class="attr-content-pro-detail-2">
+								<input <?=$check?> type="checkbox" name="themtui" class="chb chb-2 themtui" id="radio-themtui"/>
+								<label  for="radio-themtui"
+									   class="w-100 mt-2"><?= getLang('themtui') ?></label>
+							</div>
+
 						</div>
 					</div>
-				</div>
-				<!-- banner hình ảnh quảng cáo -->
 
-				<!--TODO QUA TANG KEM THEO-->
+					<div class="add-tuigiay">
 
-				<!--			<div class="wp-gift pt-4 pb-4">-->
-				<!--				<div class="sp_dis_container">-->
-				<!--					<div class="row">-->
-				<!--						 in đậm -->
-				<!--						<div class="col-8">-->
-				<!--							<div class="sp_dis_title">-->
-				<!--								Các sản phẩm tặng kèm-->
-				<!--							</div>-->
-				<!--							<div class="sp_dis_mota">-->
-				<!--								Chọn 1 trong các quà tặng-->
-				<!--							</div>-->
-				<!--						</div>-->
-				<!--						<div class="col-4 text-right">-->
-				<!--							div class="img-thumbnail_dis">-->
-				<!--								<img class=" float-end"-->
-				<!--									 width="50px"-->
-				<!--									 src="giftbox.png" alt="Hình ảnh"/>-->
-				<!--							</div> -->
-				<!--						</div>-->
-				<!--					</div>-->
-				<!--					<div class="container-voucher mt-4">-->
-				<!--						<div class="row">-->
-				<!--							<div class="col-1">-->
-				<!--								<div class="form-check">-->
-				<!--									<input class="form-check-input" type="radio" id="age1" name="age" value="30"/>-->
-				<!--								</div>-->
-				<!--							</div>-->
-				<!--							<div class="col-2 sp_img_dis">-->
-				<!--								<img class="voucher-img" src="assets/images/noimage.webp" alt="Hình ảnh"/>-->
-				<!--							</div>-->
-				<!--							<div class="col-9">-->
-				<!--								<div class="sp_cover_1">-->
-				<!--									Khi mua-->
-				<!--									<span class="red-text">1</span> BỘ ĐÔI KEM CHỐNG NẮNG 40ML VÀ BÔNG TÂY TRANG <br/>-->
-				<!--									Tặng <span class="red-text">1</span> TÚI ĐỰNG MỸ PHẨM DU LỊCH [TRỊ GIÁ 30.000Đ]-->
-				<!--								</div>-->
-				<!--							</div>-->
-				<!--						</div>-->
-				<!--					</div>-->
-				<!--					<div class="container-voucher mt-4">-->
-				<!--						<div class="row">-->
-				<!--							<div class="col-1">-->
-				<!--								<div class="form-check">-->
-				<!--									<input class="form-check-input" type="radio" id="age1" name="age" value="30"/>-->
-				<!--								</div>-->
-				<!--							</div>-->
-				<!--							<div class="col-2 sp_img_dis">-->
-				<!--								<img class="voucher-img" src="assets/images/noimage.webp" alt="Hình ảnh"/>-->
-				<!--							</div>-->
-				<!--							<div class="col-9">-->
-				<!--								<div class="sp_cover_1">-->
-				<!--									Khi mua <span class="red-text">1</span> BỘ ĐÔI KEM CHỐNG NẮNG 40ML VÀ BÔNG TÂY TRANG-->
-				<!--									<br/>-->
-				<!--									Tặng <span class="red-text">1</span> TÚI ĐỰNG MỸ PHẨM DU LỊCH [TRỊ GIÁ 30.000Đ]-->
-				<!--								</div>-->
-				<!--							</div>-->
-				<!--						</div>-->
-				<!--					</div>-->
-				<!--				</div>-->
-				<!--			</div>-->
-
-				<!--TODO VOUCHER-->
-
-				<!--<div class="wp-voucher">
-					<p class="headingArea title--detail--1">Mã khuyến mãi</p>
-
-					<div class="d-flex flex-row">
-						<div class="box-voucher">
-							ABC
+						<div id="effects_wrapper" style="display: none;">
+							<div class="tile">
+								<img alt="CKD COS VIET NAM" src="<?= MYSITE ?>assets/images/paper_bag.webp"
+									 class="img-fluid no_lazy">
+							</div>
 						</div>
-						<div class="box-voucher">
-							XYZ
-						</div>
-						<div class="box-voucher">
-							XYZ
-						</div>
+
+
+						<style>
+							.buynow {
+								height: 100%;
+								width: 100%;
+								font-weight: bold;
+								padding: 10px 20px;
+								color: white;
+								background-color: #3C5B2D;
+								display: inline-block;
+								transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+								border: none;
+							}
+
+							.themtui:hover {
+								display: block;
+							}
+
+							.add-tuigiay {
+								position: absolute;
+								right: 1.5rem;
+								width: 8rem;
+								top: 4.5rem;
+								z-index: 0;
+							}
+
+							#effects_wrapper {
+								width: 100%;
+								display: flex;
+								gap: 32px;
+								align-items: center;
+								justify-content: center;
+								flex-wrap: wrap;
+							}
+
+
+							#effects_wrapper .tile {
+								outline: 2px solid #e0e0e0e0;
+								background-color: white;
+								/* background-color: white; */
+								/* text-align: center; */
+								/* width: 80px; */
+								height: auto;
+								/* padding: 40px; */
+								display: flex;
+								flex-direction: column;
+								justify-content: center;
+								align-items: center;
+								position: relative;
+								box-shadow: 1px 10px 20px rgba(0, 0, 0, .1);
+								border-radius: 8px;
+
+							}
+
+							[type="checkbox"]:not(:checked),
+							[type="checkbox"]:checked {
+								position: absolute;
+								left: 0;
+								opacity: 0.01;
+							}
+
+							[type="checkbox"]:not(:checked) + label,
+							[type="checkbox"]:checked + label {
+								position: relative;
+								/*padding-left: 2.3em;
+								font-size: 1.05em;
+								line-height: 1.7;*/
+								cursor: pointer;
+							}
+
+							/* checkbox aspect */
+							[type="checkbox"]:not(:checked) + label:before,
+							[type="checkbox"]:checked + label:before {
+								content: '';
+								position: absolute;
+								left: 0;
+								top: 0;
+								width: 1.4em;
+								height: 1.4em;
+								border: 1px solid #aaa;
+								background: #FFF;
+								border-radius: 50%;
+								box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1), 0 0 0 rgba(203, 34, 237, .2);
+								-webkit-transition: all .275s;
+								transition: all .275s;
+							}
+
+							/* checked mark aspect */
+							[type="checkbox"]:not(:checked) + label:after,
+							[type="checkbox"]:checked + label:after {
+								content: '\2713';
+								position: absolute;
+								top: .35em;
+								left: .18em;
+								font-size: 1.5em;
+								color: #CB22ED;
+								line-height: 0;
+								-webkit-transition: all .2s;
+								transition: all .2s;
+							}
+
+							/* checked mark aspect changes */
+							[type="checkbox"]:not(:checked) + label:after {
+								opacity: 0;
+								-webkit-transform: scale(0) rotate(45deg);
+								transform: scale(0) rotate(45deg);
+							}
+
+							[type="checkbox"]:checked + label:after {
+								opacity: 1;
+								-webkit-transform: scale(1) rotate(0);
+								transform: scale(1) rotate(0);
+							}
+
+							/* Disabled checkbox */
+							[type="checkbox"]:disabled:not(:checked) + label:before,
+							[type="checkbox"]:disabled:checked + label:before {
+								box-shadow: none;
+								border-color: #bbb;
+								background-color: #e9e9e9;
+							}
+
+							[type="checkbox"]:disabled:checked + label:after {
+								color: #777;
+							}
+
+							[type="checkbox"]:disabled + label {
+								color: #aaa;
+							}
+
+							/* Accessibility */
+							[type="checkbox"]:checked:focus + label:before,
+							[type="checkbox"]:not(:checked):focus + label:before {
+								box-shadow: inset 0 1px 3px rgba(0, 0, 0, .1), 0 0 0 6px rgba(203, 34, 237, .2);
+							}
+
+						</style>
+						<script>
+							if($('.themtui').is(":checked")){
+								$('#effects_wrapper').show();
+							}
+
+							const checkbox = document.getElementById('radio-themtui')
+
+							checkbox.addEventListener('change', (event) => {
+								if (event.currentTarget.checked) {
+									$('#effects_wrapper').show();
+
+								} else {
+									$('#effects_wrapper').hide();
+								}
+							})
+
+
+
+						</script>
+
+
 					</div>
-				</div>-->
 
-				<div class="row pt-5 cover-mb-combo-button" style="padding-left: 2%">
-					<?= share_link();?>
-				</div>
-				<div class="row pt-5 cover-mb-combo-button" style="padding-left: 2%">
-					<div class="col-12">
-						<!-- <div class="col-6"></div> -->
+					<!--TODO QUA TANG KEM THEO-->
+					<?php $this->load->view('page/product/gifts'); ?>
+					<!--TODO VOUCHER-->
+					<?php $this->load->view('page/product/voucher'); ?>
 
-					</div>
-					<div class="wp-btn d-flex flex-row justify-content-start cover-mb-combo-button">
-						<div class="mr-1">
-							<!--wp-muangay-->
+					<div class="wp-cart-add">
+
+						<div class="row">
+
+							<div class="col-12">
+								<div class="share-link" style="position: absolute; left: 0;top: -1rem;">
+									<?=share_link()?>
+								</div></div>
+						</div>
+						<div class="m-0 p-0 d-flex flex-row flex-wrap justify-content-end mb-2">
 							<a
-								class="btn btn-primary buynow addcart text-decoration-none left"
-								data-id="<?= $row_detail['id'] ?>"
-								data-action="buynow"
-								style="height: 100%;width: 100%;font-weight: bold;padding: 10px 20px;color: white;background-color: #3C5B2D;display: inline-block;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border: none;"
-							>
-								<span><?= getLang('dathang') ?></span>
-							</a>
-						</div>
-						<div class="mr-1">
-
-							<a
-								class="btn btn-primary transition addnow addcart addcart2 text-decoration-none"
+								class="btn btn-primary transition addnow addcart text-decoration-none"
 								target="_blank"
 								data-id="<?= $row_detail['id'] ?>"
-								data-action="addnow"
-								style="width: 4rem; height: auto;border: 1px solid #3c5b2d;   background-color: #fff; color: white; padding: 10px 10px; text-decoration: none;"
+								style="border-radius:5px; width: 4rem; height: auto;border: 1px solid #3c5b2d;   background-color: #fff; color: white; padding: 10px 10px; text-decoration: none;"
 							>
 								<img src="<?= site_url(); ?>assets/icon/cart.png" width="25px" height="25px"/>
 							</a>
-						</div>
-
-						<div>
 							<a
-								class="btn btn-primary transition addnow addcart addcart2 text-decoration-none"
+								class=" ml-2 btn btn-primary transition text-decoration-none"
 								target="_blank"
 								href="https://zalo.me/<?= preg_replace('/[^0-9]/', '', $optsetting['zalo']); ?>"
-								style="font-weight: bold; background-color: #118acb; color: white; padding: 10px 20px; text-decoration: none;"
+								style="border-radius:5px; font-weight: bold; background-color: #118acb; color: white; padding: 10px 20px; text-decoration: none;"
 							>
 								Zalo
 							</a>
 						</div>
+
+						<div class="row justify-content-end align-items-center text-center">
+
+							<div class="col-12 ml-0 pl-0">
+								<a
+									class="w-100 d-block btn btn-primary buynow addcart text-decoration-none left"
+									data-id="<?= $row_detail['id'] ?>"
+									data-action="buynow"
+								>
+									<span><?= getLang('dathang') ?></span>
+								</a>
+
+							</div>
+						</div>
+
 					</div>
-				</div>
-				<!-- <div class="pt-5">
-					<a href="https://ckdvietnam.vn/account/dangky">
-					<img class="img-fluid" src="assets/images/banner_demo.webp"
 
-						 alt="banner"/>
-					</a>
 
-				</div> -->
-				<!--<div class="col-6">
+					<!-- <div class="pt-5">
+						<a href="https://ckdvietnam.vn/account/dangky">
+						<img class="img-fluid" src="assets/images/banner_demo.webp"
+
+							 alt="banner"/>
+						</a>
+
+					</div> -->
+					<!--<div class="col-6">
 					<div class="row">
 						<div class="col-6">
 							<p class="headingArea title--detail--1">Tổng số tiền:</p>
@@ -322,356 +425,33 @@ $num_slider = 1;
 						</div>
 					</div>
 				</div>-->
-				<!-- <div class="col-6">
+					<!-- <div class="col-6">
 
-				</div> -->
-			</div>
-		</div>
-	</div>
-	<div class="main_fix d-block mb-2">
-		<div class="wp-box" style="height: 100%; width: 100%">
-			<div class="row" style="height: 100%; width: 100%">
-				<div class="col-12 col-lg-6">
-
-					<!--wp-review-->
-					<div class="wp-review">
-						<div class="d-flex w-100 text-center justify-content-center">
-							<!--slider__flex w-100-->
-							<!--<div class="slider_empty"></div>-->
-							<div class="img-review w-100 pt-4">
-								<p class="text-sm text-center font-weight-normal w-100 font-weight-bold">
-									<?= getLang('hinhanhreview') ?>
-								</p>
-
-								<?php
-								//	qq($danhgia);
-
-								?>
-
-								<div class="swiper-container review-swiper">
-									<div class="swiper-wrapper">
-										<?php
-										$count = 1;
-										if (is_array($danhgia) && count($danhgia)) {
-											foreach ($danhgia as $v) {
-												//if($count >=5) break;
-												//$count++;
-												$opt_rev = (isset($v['options2']) && $v['options2'] != '') ? json_decode($v['options2'], true) : null;
-												$sosao = $opt_rev['sosao'] ?? 5;
-												if ($v['photo'] == '') continue;
-												?>
-												<div class="swiper-slide h-auto px-1 mt-0">
-													<div class="img_post">
-														<!--slider-img-->
-														<img
-															data-sosao="<?= $sosao ?>"
-															data-danhgia="true" data-id="<?= $v['id'] ?>"
-															onerror="this.onerror=null;this.src='<?= image_default('empty') ?>'"
-															class="img-fluid center"
-															src="<?= MYSITE . UPLOAD_PRODUCT_L . toWebp($v['photo']) ?>"
-															alt="<?= !empty($v['motavi']) ? $v['motavi'] : '' ?>"
-														/>
-													</div>
-												</div>
-												<?php
-											}
-										}
-										?>
-									</div>
-
-								</div>
-
-
-							</div>
-						</div>
-
-					</div>
-
+					</div> -->
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="mt-5 py-2 main_fix section">
-		<div id="navbar" style="display: block;">
-			<div id="spnarbar" style="display: none;">
-				<div class="main_fix relative pc mt-2">
-					<div class="info_sp_nav pt-3 d-flex justify-content-start">
-						<div class="thumb_sp_nav">
-							<img id="imgScrollFix" onerror="this.onerror=null;this.src='<?= image_default('empty') ?>'"
-								 src="<?= UPLOAD_PRODUCT_L . toWebp($row_detail['photo']) ?>"
-								 alt="<?= $row_detail['ten'] ?>"
-								 class="loading img-fluid" data-was-processed="true"/>
-						</div>
-						<div class="block_info_sp_nav w-100">
-							<div class="title_nav">
-								<?= $row_detail['ten'] ?? "" ?>
-							</div>
-							<div class="block_price_nave">
-								<?php if ($row_detail['giamoi']) { ?>
-									<span class="price-new-pro-detail"
-										  data-gia="<?= $row_detail['giamoi'] ?>"><?= format_money($row_detail['giamoi']) ?></span>
-									<span class="price-old-pro-detail"><?= format_money($row_detail['gia']) ?></span>
-								<?php } else { ?>
-									<span class="price-new-pro-detail"
-										  data-gia="<?= $row_detail['gia'] ?>"><?= ($row_detail['gia']) ? format_money($row_detail['gia']) : getLang('lienhe') ?></span>
-								<?php } ?>
-							</div>
-						</div>
-						<div class="block_add_to_cart_nav">
-							<div class="wp-muangay">
-								<a
-									class="btn btn-primary buynow addcart text-decoration-none left"
-									data-id="<?= $row_detail['id'] ?>"
-									data-action="buynow"
-									style="width: 100%;font-weight: bold;font-size: 16px;padding: 10px 20px;color: white;background-color: #3C5B2D;display: inline-block;transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border: none;"
-								>
-									<span><?= getLang('dathang') ?></span>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div>
-					<!--  Nút thêm vào giỏ hàng -->
+	</section>
+	<section class="mb-5">
 
-				</div>
-			</div>
-			<div class="main_fix">
-				<ul class="nav-tabs p-0 m-0 main_fix justify-content-evenly d-flex">
-					<li class="text-center w-25 nav-item frame-sesson-1" data-tabs="info-pro-detail">
-						<a class="nav-link cover-nav-link fix-padding-one" href="#section1">
-							<?= getLang('thongtinsanpham') ?>
-						</a>
-					</li>
-					<li class="text-center w-25 nav-item frame-sesson-1" data-tabs="info-thanhphan">
-						<a class="nav-link cover-nav-link fix-padding-one" href="#section2">
-							<?= getLang('thanhphansanpham') ?>
-						</a>
-					</li>
-					<li class="text-center w-25 nav-item frame-sesson-1" data-tabs="commentfb-pro-detail">
-						<a class="nav-link cover-nav-link fix-padding-one" href="#section3">
-							<?= getLang('binhluan') ?>
-						</a>
-					</li>
-					<li class="text-center w-25 nav-item frame-sesson-1" data-tabs="sanphamcungloai-detail">
-						<a class="nav-link cover-nav-link fix-padding-one" href="#section4">
-							<?= getLang('sanphamcungloai') ?>
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div id="section1" class="main_fix section"
-		 style="padding-top: 0px;">
-		<div id="box_sanpham" class="w-100 content-tabs-pro-detail info-pro-detail active">
-			<h2 class="py-5 d-flex text-center m-auto w-50">
-				<span class="w-100 d-block"><?= getLang('thongtinsanpham') ?></span>
-			</h2>
+	</section>
+	<section class="mt-5 mx-4">
 
-			<?= htmlspecialchars_decode($row_detail['noidung'] ?? "") ?>
-		</div>
-	</div>
-	<div id="section2" class="main_fix section">
-		<div id="box_thanhphansanpham" class="w-100 content-tabs-pro-detail info-thanhphan">
-			<h2 class="py-5 d-flex text-center m-auto w-50">
-				<span class="w-100 d-block"><?= getLang('thanhphansanpham') ?></span>
-			</h2>
-			<?= htmlspecialchars_decode($row_detail['noidungthanhphan'] ?? "") ?>
-		</div>
-	</div>
-	<div id="section3" class="main_fix section">
-		<?php /*if (is_array($danhgia) && count($danhgia) > 0) : */ ?>
+	</section>
+	<section>
+		<?php $this->load->view('page/product/details'); ?>
+	</section>
 
-		<div id="box_binhluan" class="w-100 content-tabs-pro-detail commentfb-pro-detail">
-
-			<h2 class="py-5 d-flex text-center m-auto w-50">
-				<span class="w-100 d-block"><?= getLang('binhluan') ?></span>
-			</h2>
-
-			<div class="sao_bl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-					class="fas fa-star"></i><i
-					class="fas fa-star"></i><i class="fas fa-star"></i></div>
-
-			<div class="danhgia2">
-				<p class="td"><?= getLang('danhgia') ?></p>
-				<p><?= getLang('khachhangnhanxet') ?></p>
-				<div class="bao_danhgia">
-					<div class="dg1">
-						<?php
-						$so_danhgia = 1;
-						if (is_array($danhgia) && count($danhgia) > 0) {
-							$so_danhgia = @$count_danhgia ?? count($danhgia);
-						}
-
-						?>
-						<p><?= getLang('danhgiatrungbinh') ?></p>
-						<p class="so"><?= round($trungbinh['tb'], 1) ?></p>
-						<p><?php echo $so_danhgia ?> <?= getLang('nhanxet') ?></p>
-					</div>
-					<div class="dg2">
-						<p class="dong">5 <?= getLang('sao') ?> <span><b
-									style="width:<?= ($sao5['dem'] / $so_danhgia) * 100 ?>%;"></b></span><?= $sao5['dem'] ?> <?= getLang('rathailong') ?>
-						</p>
-						<p class="dong">4 <?= getLang('sao') ?> <span><b
-									style="width:<?= ($sao4['dem'] / $so_danhgia) * 100 ?>%;"></b></span><?= $sao4['dem'] ?> <?= getLang('hailong') ?>
-						</p>
-						<p class="dong">3 <?= getLang('sao') ?> <span><b
-									style="width:<?= ($sao3['dem'] / $so_danhgia) * 100 ?>%;"></b></span><?= $sao3['dem'] ?> <?= getLang('binhthuong') ?>
-						</p>
-						<p class="dong">
-							2 <?= getLang('sao') ?>
-							<span>
-                                        <b style="width:<?= ($sao2['dem'] / $so_danhgia) * 100 ?>%;"></b></span><?= $sao2['dem'] ?>
-							<?= getLang('khonghailong') ?>
-						</p>
-						<p class="dong">1 <?= getLang('sao') ?> <span><b
-									style="width:<?= ($sao1['dem'] / $so_danhgia) * 100 ?>%;"></b></span><?= $sao1['dem'] ?> <?= getLang('ratte') ?>
-						</p>
-					</div>
-				</div>
-			</div>
-
-			<?php if ($isLogin) { ?>
-				<div class="danhgia3">
-					<p class="td"><?= getLang('danhgiasanphamnay') ?>.</p>
-
-					<div class="danhgiasao">
-						<?php for ($i = 1; $i <= 5; $i++) { ?>
-							<span data-value="<?= $i ?>"></span>
-						<?php } ?>
-					</div>
-
-					<form class="form-contact validation-contact" novalidate method="post" action=""
-						  enctype="multipart/form-data">
-						<input type="hidden" name="link_video" id="link_video" value="5">
-						<div class="input-contact">
-							<input type="file" class="custom-file-input" name="file">
-							<label class="custom-file-label" for="file"
-								   title="<?= getLang('chon') ?>"><?= getLang('chonhinhanh') ?></label>
-							<p>.jpg, .png, .gif</p>
-						</div>
-
-						<div class="input-contact">
-                            <textarea class="form-control" id="motavi" name="motavi"
-									  placeholder="<?= getLang('noidung') ?>"
-									  required/></textarea>
-							<div class="invalid-feedback"><?= getLang('vuilongnhapnoidung') ?></div>
-						</div>
-						<input type="submit" class="btn btn-primary" name="submit-contact"
-							   value="<?= getLang('gui') ?>" disabled/>
-						<input type="reset" class="btn btn-secondary" value="<?= getLang('nhaplai') ?>"/>
-						<input type="hidden" name="recaptcha_response_contact"
-							   id="recaptchaResponseContact">
-					</form>
-				</div>
-			<?php } else { ?>
-				<div class="vuilongdangnhap">
-					<a href="account/dang-nhap"><?= getLang('vuilongdangnhap') ?></a>
-				</div>
-			<?php } ?>
-			<?php if (is_array($danhgia) && count($danhgia)) { ?>
-				<div class="danhgia">
-					<?php
-					//qq($danhgia);
-					foreach ($danhgia as $k => $v) { ?>
-						<?php
-						if (empty($v['photo']) || empty($v['link_video'])) continue;
-
-						$tennguoi = @$v['tenvi'];
-						if(!empty($v['id_member']) && $v['id_member'] == 1){
-
-						}else{
-							$get_member = $d->rawQueryOne("select ten from #_member where id='" . $v['id_member'] . "'");
-							$tennguoi = $get_member['ten'] ?? "";
-						}
-
-						?>
-
-						<div class="item_dg">
-							<div class="text-small"><?= date('d-m-Y', $v['ngaytao']) ?></div>
-							<p class="ten"><?= $tennguoi ?></p>
-							<p class="sao">
-								<?php
-								$sosao = 0;
-								for ($i = 1; $i <= 5; $i++) { ?>
-									<i class="fas fa-star <?php if ($i <= $v['link_video']) {
-										echo 'active';
-										$sosao++;
-									} ?>"></i>
-								<?php } ?>
-							</p>
-							<p class="mota"><?= htmlspecialchars_decode($v['motavi']) ?></p>
-							<?php if ($v['photo'] != '') {
-
-								//$opt_rev = (isset($v['options2']) && $v['options2'] != '') ? json_decode($v['options2'], true) : null;
-
-								//$sosao = $opt_rev['sosao'] ?? 5;
-
-								?>
-								<div class="slider-img img img_post"><img data-sosao="<?= $sosao ?>" data-danhgia="true"
-																		  data-id="<?= $v['id'] ?>"
-																		  src="<?= UPLOAD_PRODUCT_L . toWebp($v['photo']) ?>"
-																		  alt="<?= !empty($v['ten']) ? $v['ten'] : '' ?>">
-								</div>
-							<?php } ?>
-						</div>
-					<?php }
-					?>
-
-
-					<?php
-
-					if (!empty($paging_danhgia)) {
-						?>
-						<div class="my-2 pt-4">
-							<div
-								class="pagination-home"><?= (isset($paging_danhgia) && $paging_danhgia != '') ? $paging_danhgia : '' ?></div>
-						</div>
-						<?php
-					}
-					?>
-				</div>
-
-			<?php } ?>
-
-
-		</div>
-
-		<?php /*endif; */ ?>
-
-
-	</div>
-	<div id="section4" class="main_fix section">
-		<div id="box_sanphamcungloai" class="w-100 content-tabs-pro-detail sanphamcungloai-detail">
-			<h2 class="py-5 d-flex text-center m-auto w-50">
-				<span class="w-100 d-block"><?= getLang('sanphamcungloai') ?></span>
-			</h2>
-			<div class="sanpham">
-				<div class="wap_loadthem_sp" data-div=".loadthem_sp100" data-lan="1" data-where="<?= $where ?>"
-					 data-sosp="<?= $sosp ?>" data-max="<?= $solan_max ?>">
-					<div class="wap_item loadthem_sp100">
-
-					</div>
-					<?php if ($solan_max > 1) { ?><p class="load_them"><?= getLang('xemthem') ?>
-						<span><?= ($dem['numrows'] - $sosp) ?></span> <?= getLang('sanpham') ?> <i
-							class="fas fa-caret-right"></i>
-						</p><?php } ?>
-				</div>
-			</div>
-
-		</div>
-	</div>
-</div>
+</main>
 
 <script>
 
-    var total_slider = '<?=$num_slider?>';
+	var total_slider = '<?=$num_slider?>';
 </script>
 <style>
-    .all_review{
-        z-index: 99999999999 !important;
-    }
+	.all_review {
+		z-index: 99999999999 !important;
+	}
 
 	.img_post {
 		height: 10rem;
@@ -969,9 +749,9 @@ $num_slider = 1;
 
 	.slider__thumbs .slider__image {
 		transition: 0.25s;
-	/*	-webkit-filter: grayscale(100%);
-		filter: grayscale(100%);
-		opacity: 0.5;*/
+		/*	-webkit-filter: grayscale(100%);
+			filter: grayscale(100%);
+			opacity: 0.5;*/
 	}
 
 	.slider__thumbs .slider__image:hover {
@@ -983,9 +763,9 @@ $num_slider = 1;
 	}
 
 	.slider__thumbs .swiper-slide-thumb-active .slider__image {
-	/*	-webkit-filter: grayscale(0%);
-		filter: grayscale(0%);
-		opacity: 1;*/
+		/*	-webkit-filter: grayscale(0%);
+			filter: grayscale(0%);
+			opacity: 1;*/
 	}
 
 	.slider .slider__images {
@@ -1135,16 +915,16 @@ $num_slider = 1;
 
 
 <script>
-    function isEven(n) {
-        return n % 2 == 0;
-    }
+	function isEven(n) {
+		return n % 2 == 0;
+	}
 
 	var slider = 3;
-    if(isEven(total_slider)){
-        slider = 4;
-    }else {
-        slider = 3;
-    }
+	if (isEven(total_slider)) {
+		slider = 4;
+	} else {
+		slider = 3;
+	}
 
 	const sliderThumbs = new Swiper(".slider__thumbs .swiper-container", {
 		direction: "vertical",
@@ -1162,15 +942,15 @@ $num_slider = 1;
 		freeMode: true,
 		breakpoints: {
 			0: {
-                slidesPerView: slider,
+				slidesPerView: slider,
 				direction: "vertical",
 			},
 			768: {
-                slidesPerView: slider,
+				slidesPerView: slider,
 				direction: "vertical",
 			},
-            990: {
-                slidesPerView: slider,
+			990: {
+				slidesPerView: slider,
 				direction: "vertical",
 			},
 		},
@@ -1218,15 +998,14 @@ $num_slider = 1;
 	});
 
 
+	setTimeout(function () {
 
-    setTimeout(function (){
+		$(".slider__thumbs").css({"height": "calc(" + ((slider * 100) + 100) + "px - 100px)"});
 
-        $(".slider__thumbs").css({"height": "calc("+((slider *100 )+100)+"px - 100px)"});
-
-    }, 250)
+	}, 250)
 </script>
 
- 
+
 <style>
 
 	.slider__thumbs .swiper-wrapper .swiper-slide:first-child {
@@ -1250,7 +1029,7 @@ $num_slider = 1;
 			if (hash) {
 				$([document.documentElement, document.body]).animate({
 					scrollTop: $(hash).offset().top
-				}, 500,function(){
+				}, 500, function () {
 
 
 					window.location.hash = hash;
@@ -1309,6 +1088,26 @@ $num_slider = 1;
 				},
 			})
 		})
+
+
+		$('.chosen_gift').on('click', function(e) {
+			var qua = $(this).val();
+			var id = $('#product_id').val();
+			var img =$(this).data('img');
+
+			$.ajax({
+				type: "post",
+				url: site_url() + "ajax/sethasQuaTang",
+				data: {
+					has_quatang: qua,
+					img: img,
+					id: id,
+				},
+				beforeSend: function () {
+				},
+			})
+		});
+
 	});
 </script>
 
@@ -1403,7 +1202,13 @@ $num_slider = 1;
 
 
 <style>
-
+	.chosen_gift{
+		position: absolute;
+		margin-top: 1rem;
+		margin-left: -1.25rem;
+		width: 1.5rem;
+		height: 1.5rem;
+	}
 	img.center {
 		display: block;
 		margin: 0 auto;
@@ -1549,9 +1354,7 @@ $num_slider = 1;
 		font-weight: 700;
 
 	}
-	.main_fix {
-		background: #fff;
-	}
+
 
 	.mySwiper .swiper {
 		width: 100%;
@@ -1617,17 +1420,17 @@ $num_slider = 1;
 		/*		z-index: 999;
 				height: 22rem;
 				padding-top: 12rem;*/
-	/*	box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.02);*/
+		/*	box-shadow: 1px 1px 5px 2px rgba(0, 0, 0, 0.02);*/
 	}
+
 	html {
 		scroll-behavior: smooth !important;
 	}
 
-	.swiper-pagination{
+	.swiper-pagination {
 		display: none;
 	}
 </style>
-
 
 
 <!--mobile ver-->

@@ -139,6 +139,7 @@
 
 .sp_cover_1 {
 	font-size: 0.7rem;
+	font-family: var(--skin-body-font);
 }
 
 .box-voucher {
@@ -885,4 +886,7 @@ img.center {
 	height: 8px;
 	border-radius: 50%;
 	background: white;
+}
+.form-check-input ,.themtui{
+	cursor: pointer;
 }

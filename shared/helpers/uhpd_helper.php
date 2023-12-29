@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 include_once SHAREDPATH. 'tool/localstorage/localstorage.php';
 
 $GLOBALS['DevMode'] = false;
-define("CACHE_FOLDER", SHAREDPATH . "caches" . DIRECTORY_SEPARATOR);
-// This folder should exist and an .htaccess file should be added so that the values can't be browsed with the browser
-define("LOCALSTORAGE_FOLDER", CACHE_FOLDER."values");
+
+define("LOCALSTORAGE_FOLDER", SHAREDPATH . "caches" . DIRECTORY_SEPARATOR."values");
 
 function getDataURI($imagePath) {
 	$finfo = new finfo(FILEINFO_MIME_TYPE);
@@ -169,6 +169,7 @@ function cache_localStore($name = '', $value = '')
 	//localStorage("test", null);
 
 }
+
 if (!function_exists('setDevMode')) {
 	/**
 	 * bat mode
@@ -373,7 +374,15 @@ if (!function_exists('record_del')) {
 }
 
 // todo time ------------------------------------------------------------------------
-
+function datetotime($time)
+{
+	$date = strtotime(str_replace("/", "-", $time));
+	return strtotime(date('Y-m-d', $date));
+}
+function timetodate($data)
+{
+	return date('d/m/Y', $data);
+}
 /**
  * Hàm getQuarterByMonth
  *
@@ -1242,4 +1251,30 @@ if (!function_exists('include_file')) {
 			}
 		}
 	}
+}
+
+function dsadsa()
+{
+	$count = file_get_contents("count.txt");
+	$count = trim($count);
+	$count = $count + 1;
+	$fl = fopen("count.txt","w+");
+	fwrite($fl,$count);
+	fclose($fl);
+}
+
+function ww($d)
+{
+	echo '<pre>';
+	var_dump($d);
+	echo '</pre>';
+}
+function qq($data, $die = false){
+	highlight_string("<?php\n " . var_export($data, true) . "?>");
+	echo '<script>document.getElementsByTagName("code")[0].getElementsByTagName("span")[1].remove() ;document.getElementsByTagName("code")[0].getElementsByTagName("span")[document.getElementsByTagName("code")[0].getElementsByTagName("span").length - 1].remove() ; </script>';
+	echo '<br/>';
+	echo '<br/>';
+	echo '<br/>';
+
+	if($die) die();
 }

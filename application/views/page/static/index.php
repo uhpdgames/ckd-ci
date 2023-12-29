@@ -6,4 +6,3 @@
 </div>
 
 <?php
-getCSSScript('statis_page');?>

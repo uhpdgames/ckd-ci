@@ -81,4 +81,79 @@
     </div>
 </section>
 
- 
+
+
+<script src="assets/apexcharts/apexcharts.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		var apexMixedChart;
+		var options = {
+			colors: ['#3c8dbc'],
+			chart:
+				{
+					id: 'apexMixedChart',
+					height: 450,
+					type: 'line',
+					dropShadow:
+						{
+							enabled: true,
+							color: '#000',
+							top: 18,
+							left: 7,
+							blur: 20,
+							opacity: 0.2
+						}
+				},
+			series: [{
+				name: 'Thống kê truy cập tháng <?=$month?>',
+				type: 'line',
+				data: [
+					<?php for($i = 1; $i <= $daysInMonth; $i++) {
+					$k = $i+1;
+					$begin = strtotime($year.'-'.$month.'-'.$i);
+					$end = strtotime($year.'-'.$month.'-'.$k);
+					$todayrc = $d->rawQueryOne("select count(*) as todayrecord from #_counter where tm >= ? and tm < ?",array($begin,$end));
+					$today_visitors = $todayrc['todayrecord']; ?>
+					<?=$today_visitors?>,
+					<?php } ?>
+				]
+			}],
+			stroke: {
+				curve: 'smooth'
+			},
+			grid: {
+				borderColor: '#e7e7e7',
+				row: {
+					colors: ['#f3f3f3', 'transparent'],
+					opacity: 0.5
+				},
+			},
+			markers: {
+				size: 1
+			},
+			dataLabels: {
+				enabled: false
+			},
+			labels: [
+				<?php for($i = 1; $i <= $daysInMonth; $i++) {
+				$k = $i+1;
+				$begin = strtotime($year.'-'.$month.'-'.$i);
+				$end = strtotime($year.'-'.$month.'-'.$k);
+				$todayrc = $d->rawQueryOne("select count(*) as todayrecord from #_counter where tm >= ? and tm < ?",array($begin,$end));
+				$today_visitors = $todayrc['todayrecord']; ?>
+				'D<?=$i?>',
+				<?php } ?>
+			],
+			legend: {
+				position: 'top',
+				horizontalAlign: 'right',
+				floating: true,
+				offsetY: -25,
+				offsetX: -5
+			}
+		}
+
+		apexMixedChart = new ApexCharts(document.querySelector("#apexMixedChart"), options);
+		apexMixedChart.render();
+	})
+</script>

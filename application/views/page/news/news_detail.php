@@ -103,18 +103,13 @@
         font-size: 0.8rem;
     }
 
-    .h2,
-    h2 {
+    .content-main .h2,
+    .content-main h2 {
         font-size: 1rem;
-        display: block;
+        /*display: block;*/
     }
 
-    strong {
-        font-weight: 500;
-        font-size: 1rem;
-        line-height: 1.5;
-        display: block;
-    }
+
 
     .news-latest,
     .menu-blog {

@@ -10,21 +10,160 @@ class Seo extends CI_Controller
 		parent::__construct();
 	}
 
+	function index()
+	{
+		$_link =
+'https://ckdvietnam.com/san-pham
+https://ckdvietnam.com/san-pham/cham-soc-da
+https://ckdvietnam.com/san-pham/chong-nang
+https://ckdvietnam.com/san-pham/co-the-toc
+https://ckdvietnam.com/san-pham/goi-mat-na
+https://ckdvietnam.com/san-pham/lam-sach
+https://ckdvietnam.com/san-pham/kem-duong-am-co-loi-cho-da-ngan-ngua-lao-hoa-lacto-derm-50ml
+https://ckdvietnam.com/san-pham/tinh-chat-cai-thien-ket-cau-va-tong-mau-da-giam-nhiet-do-da-ckd-retino-collagen-first-essence-tieu-phan-tu-300-150g
+https://ckdvietnam.com/san-pham/nuoc-hoa-hong-duong-am-lam-diu-da-kho-lacto-derm-200ml
+https://ckdvietnam.com/san-pham/combo-giam-nep-nhan-x2-thanh-lan
+https://ckdvietnam.com/san-pham/tinh-chat-da-nang-aqua-hyalon-danh-cho-nam-ckd
+https://ckdvietnam.com/san-pham/dau-goi-amino-biotin-keratin-cho-da-dau
+https://ckdvietnam.com/san-pham/dau-goi-amino-biotin-scalp-keratin
+https://ckdvietnam.com/san-pham/lactoderm-sua-rua-mat-duong-am-co-loi-cho-da-400ml
+https://ckdvietnam.com/san-pham/sua-rua-mat-duong-am-co-loi-cho-da-lactoderm
+https://ckdvietnam.com/san-pham/kem-chong-nang-lactoderm-daily-sun-co-loi-cho-da
+https://ckdvietnam.com/san-pham/kem-chong-nang-nang-tone-chua-tinh-chat-keo-ong-ckd-green-propolis-all-covery-sun-pf-50-40ml
+https://ckdvietnam.com/san-pham/kem-chong-nang-chua-tinh-chat-keo-ong-xanh-ckd-green-propolis-all-covery-sun-pf-50-40ml
+https://ckdvietnam.com/san-pham/sap-tao-kieu-toc-mo-aqua-hyalon-danh-cho-nam-ckd
+https://ckdvietnam.com/san-pham/sua-rua-mat-lam-sach-lo-chan-long-ckd-retino-collagen-tieu-phan-tu-300-150ml
+https://ckdvietnam.com/san-pham/mat-na-nang-co-giup-da-dan-hoi-bang-vai-thun-bellasu-v-stretching-12gr-1-mieng
+https://ckdvietnam.com/san-pham/mat-na-se-khit-lo-chan-long-duong-am-cho-da-ckd-retino-collagen-tieu-phan-tu-300-1-mieng
+https://ckdvietnam.com/san-pham/kem-chong-nhan-co-co-dac-ngua-lao-hoa-va-nep-gap-vung-mat-ckd-retino-collagen-25ml
+https://ckdvietnam.com/san-pham/mat-na-giay-chiec-xuat-diep-ca-giup-da-dan-hoi-mem-mai-va-am-muot-lacto-derm-1-mieng
+https://ckdvietnam.com/san-pham/tinh-chat-mo-tham-sang-da-ckd-vita-c-teca-7-days-4g
+https://ckdvietnam.com/san-pham/serum-cai-thien-nep-nhan-tang-do-dan-hoi-trang-sang-da-ckd-collagen-pumping-ampoule-tieu-phan-tu-300-30-ml
+https://ckdvietnam.com/san-pham/kem-duong-am-san-chac-da-chong-lao-hoa-da-ckd-retino-collagen-tieu-phan-tu-300-40ml
+https://ckdvietnam.com/san-pham/kem-duong-co-bellasu-decollete-50ml
+https://ckdvietnam.com/san-pham/kem-duong-dang-thoi-cai-thien-nep-nhan-lam-sang-da-ckd-retino-collagen-tieu-phan-tu-300-10g
+https://ckdvietnam.com/san-pham/toner-cap-am-can-bang-do-ph-thu-nho-lo-chan-long-ckd-retino-collagen-tieu-phan-tu-300-250ml
+https://ckdvietnam.com/san-pham/mat-na-kem-duong-am-sang-da-se-khit-lo-chan-long-ckd-retino-collagen-tieu-phan-tu-300-50ml-2-tuyp-5ml
+https://ckdvietnam.com/san-pham/lactoderm-400ml-sua-duong-am-tho-co-loi-cho-da
+https://ckdvietnam.com/san-pham/dau-goi-nhuom-den-nhanh-amino-biotin-plus
+https://ckdvietnam.com/san-pham/serum-nang-co-mat-ngan-ngua-lao-hoa-da-ckd-retino-collagen-guasha-tieu-phan-tu-300-400-ml
+https://ckdvietnam.com/san-pham/set-tinh-chat-mo-tham-sang-da-ckd-vita-c-teca-7-days-4gchai
+https://ckdvietnam.com/san-pham/amino-biotin-all-powerful-treetment
+https://ckdvietnam.com/san-pham/lactoderm-beneficial-moisturizing-cream-jumbo
+https://ckdvietnam.com/san-pham/kem-lan-co-ckd-ngan-ngua-nep-nhan-cai-thien-nep-nhan-co-retino-collagen-tieu-phan-tu-300-50-ml
+https://ckdvietnam.com/san-pham/combo-giam-nep-nhan-tam-biet-mun-va-dom-tham
+https://ckdvietnam.com/san-pham/combo-duong-da-giam-nep-nhan
+https://ckdvietnam.com/san-pham/combo-cai-thien-nep-nhan-da-can-bong
+https://ckdvietnam.com/san-pham/sua-rua-mat-duong-am-chiec-xuat-rau-diep-ca-giam-ba-nhon-lacto-derm-130-ml
+https://ckdvietnam.com/thuong-hieu
+https://ckdvietnam.com/lacto-derm
+https://ckdvietnam.com/bellasoo
+https://ckdvietnam.com/ckd
+https://ckdvietnam.com/dong
+https://ckdvietnam.com/nuoc-pha-tron
+https://ckdvietnam.com/keo-ong-xanh
+https://ckdvietnam.com/amino-biotin
+https://ckdvietnam.com/retino-collagen
+https://ckdvietnam.com/vitac-teca
+https://ckdvietnam.com/tin-tuc
+https://ckdvietnam.com/tin-tuc/tin-noi-bo
+https://ckdvietnam.com/tin-tuc/cam-nang
+https://ckdvietnam.com/tin-tuc/tuyen-dung
+https://ckdvietnam.com/tin-tuc/top-nhung-thuc-pham-dac-quyen-cho-phu-nu-lan-da-dep-tu-nhien-tu-ben-trong
+https://ckdvietnam.com/tin-tuc/tay-trang-dung-cach-nhung-loi-can-tranh-de-bao-ve-lan-da-tot-nhat
+https://ckdvietnam.com/tin-tuc/bi-quyet-mat-xa-mat-theo-phong-cach-han-quoc-nhung-buoc-don-gian-cho-lan-da-rang-ngoi
+https://ckdvietnam.com/tin-tuc/cham-soc-da-bang-collagen-loi-ich-va-cach-su-dung-hieu-qua-cho-lan-da-tuoi-tre
+https://ckdvietnam.com/tin-tuc/loi-ich-vuot-troi-cua-collagen-trong-cham-soc-da
+https://ckdvietnam.com/tin-tuc/mon-qua-tinh-te-danh-tang-nhung-nguoi-lai-do-tham-lang
+https://ckdvietnam.com/tin-tuc/collagen-doi-pho-voi-lao-hoa-suc-manh-va-cach-tang-cuong
+https://ckdvietnam.com/tin-tuc/cong-dung-tuyet-voi-cua-serum-collagen-trong-lam-dep-da
+https://ckdvietnam.com/tin-tuc/cai-thien-suc-khoe-da-voi-serum-collagen-tu-nhien
+https://ckdvietnam.com/tin-tuc/uu-diem-cua-serum-collagen-cho-da-kho-va-lao-hoa
+https://ckdvietnam.com/tin-tuc/lam-the-nao-de-chon-lua-serum-collagen-phu-hop-cho-da-cua-ban
+https://ckdvietnam.com/tin-tuc/bi-quyet-su-dung-serum-collagen-de-cai-thien-do-dan-hoi-cho-da
+https://ckdvietnam.com/tin-tuc/kem-duong-da-chong-lao-hoa-bi-quyet-collagen-tu-nhien
+https://ckdvietnam.com/tin-tuc/cham-soc-da-mat-dung-cach-bi-quyet-cho-lan-da-khoe-manh-va-rang-ngoi
+https://ckdvietnam.com/tin-tuc/collagen-thuy-phan-tu-bi-quyet-cho-lan-da-tuoi-tre-va-suc-khoe-hoan-hao
+https://ckdvietnam.com/tin-tuc/ckd-retino-collagen-cuoc-cach-mang-trong-linh-vuc-chong-lao-hoa
+https://ckdvietnam.com/tin-tuc/ckd-viet-nam-thuong-hieu-my-pham-hang-dau-han-quoc-da-co-mat-tai-viet-nam
+https://ckdvietnam.com/tin-tuc/dieu-ban-quan-tam-den-khi-mua-my-pham-la-gi
+https://ckdvietnam.com/tin-tuc/doc-quyen-phan-phoi-my-pham-ckd-tai-viet-nam-blue-pink-guaranteed
+https://ckdvietnam.com/tin-tuc/collagen-va-lan-da-bi-mat-loi-ich-va-cach-lam-dep-tu-nhien-hon
+https://ckdvietnam.com/tin-tuc/cham-soc-da-o-tuoi-40-top-4-hoat-chat-chong-lao-hoa-dac-biet-cho-phu-nu
+https://ckdvietnam.com/tin-tuc/goi-y-mua-kem-cham-soc-da-mat-cho-co-giao-ngay-2011-top-san-pham-doc-dao-va-y-nghia
+https://ckdvietnam.com/tin-tuc/lan-da-chay-xe-va-mat-do-dan-hoi-sau-30-bi-quyet-cai-thien-hieu-qua
+https://ckdvietnam.com/tin-tuc/lao-hoa-da-5-dau-hieu-can-biet-va-cach-cham-soc-dung-dan
+https://ckdvietnam.com/tin-tuc/kham-pha-khi-nao-nen-bat-dau-su-dung-collagen-de-duy-tri-suc-khoe-va-lan-da-tre-trung
+https://ckdvietnam.com/tin-tuc/niacinamide-thanh-phan-vang-trong-cham-soc-da
+https://ckdvietnam.com/tin-tuc/cap-am-cho-da-kho-bi-quyet-cham-soc-lan-da-mem-min
+https://ckdvietnam.com/tin-tuc/serum-tieu-phan-tu-collagen-bi-quyet-cho-lan-da-tre-trung-va-san-chac
+https://ckdvietnam.com/tin-tuc/ckd-tu-duoc-pham-den-my-pham-hanh-trinh-phat-trien-da-nganh-cua-mot-thuong-hieu-han-quoc
+https://ckdvietnam.com/tin-tuc/
+https://ckdvietnam.com/su-kien
+https://ckdvietnam.com/su-kien/happy-vietnamese-womens-day-2020-blue-pink-co-gi-hot
+https://ckdvietnam.com/su-kien/mua-noel-nam-nay-ban-da-chuan-bi-gi-chua
+https://ckdvietnam.com/su-kien/mon-qua-tinh-te-danh-tang-nhung-nguoi-lai-do-tham-lang
+https://ckdvietnam.com/su-kien/uu-dai-danh-rieng-khi-ban-dang-ky-thanh-vien-cua-ckd-tang-ngay-voucher-10-cho-don-hang-dau-tien-mua-sam-tai-website-ckdvietnamcom
+https://ckdvietnam.com/thong-bao
+https://ckdvietnam.com/chinh-sach
+https://ckdvietnam.com/ho-tro-dat-hang
+https://ckdvietnam.com/chinh-sach-tra-hang
+https://ckdvietnam.com/chinh-sach-bao-hanh
+https://ckdvietnam.com/chinh-sach-ban-hang
+https://ckdvietnam.com/chinh-sach-bao-mat-thong-tin
+https://ckdvietnam.com/cau-hoi-thuong-gap
+https://ckdvietnam.com/bai-viet-thuong-hieu
+https://ckdvietnam.com/cau-chuyen-thuong-hieu
+https://ckdvietnam.com/loi-hua-c-k-d
+https://ckdvietnam.com/gioi-thieu-thuong-hieu
+https://ckdvietnam.com/brand
+https://ckdvietnam.com/ho-tro
+https://ckdvietnam.com/gioi-thieu
+https://ckdvietnam.com/lien-he
+https://ckdvietnam.com/';
+
+		$all_link = explode("\n", $_link) ;
+
+		header("Content-Type: text/xml;charset=iso-8859-1");
+		header('Content-type: text/xml');
+
+		//$PAGE = MYSITE;
+
+		$all_page = '';
+		foreach ( $all_link as $link ){
+			$all_page .= '<url>';
+			$all_page .= '<loc>' . $link . '</loc>';
+			//$all_page .= '<lastmod>' . date('c', $value['ngaytao']) . '</lastmod>';
+			$all_page .= '<changefreq>daily</changefreq>';
+			//$all_page .= '<priority>' . $priority . '</priority>';
+			$all_page .= '</url>';
+		}
+		echo <<<html
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+$all_page
+</urlset>
+html;
+
+
+	}
+
 	function sitemap()
 	{
+		echo '';
+		die;
 		$config = $this->config->item('main_config');
 		$info_db = $config['database'];
 		$file = SHAREDLIBRARIES."class/class.".str_replace("\\","/",trim('PDODb','\\')).'.php';
+
 		if(file_exists($file)) require_once $file;
 
 		$requick = array(
 			/* Sản phẩm */
 			array("tbl" => "product_list", "field" => "idl", "source" => "product", "com" => "san-pham", "type" => "san-pham"),
 			array("tbl" => "product", "field" => "id", "source" => "product", "com" => "san-pham", "type" => "san-pham", 'menu' => true),
-
 			array("tbl" => "news", "field" => "id_thuonghieu", "source" => "news", "com" => "thuong-hieu", "type" => "thuong-hieu", 'menu' => true),
 			array("tbl" => "news", "field" => "id_dong", "source" => "news", "com" => "dong", "type" => "dong", 'menu' => true),
-
 			array("tbl" => "news_list", "field" => "idl", "source" => "news", "com" => "tin-tuc", "type" => "tin-tuc"),
 			array("tbl" => "news", "field" => "id", "source" => "news", "com" => "tin-tuc", "type" => "tin-tuc", 'menu' => true),
 			array("tbl" => "news", "field" => "id", "source" => "news", "com" => "su-kien", "type" => "su-kien", 'menu' => true),
@@ -35,20 +174,9 @@ class Seo extends CI_Controller
 			array("tbl" => "static", "field" => "id", "source" => "static", "com" => "gioi-thieu", "type" => "gioi-thieu", 'menu' => true),
 			array("tbl" => "static", "field" => "id", "source" => "contact", "com" => "lien-he", "type" => "lien-he", 'menu' => true),
 		);
-		header("Content-Type: text/xml;charset=iso-8859-1");
-	 header('Content-type: text/xml');
-		$d = new PDODb($info_db);
 
-
-
-
-
-
-		$data = array(
-			'data' => array(),
-			'requick' => $requick,
-			'd' => new PDODb($info_db),
-		);
+		#header("Content-Type: text/xml;charset=iso-8859-1");
+		#header('Content-type: text/xml');
 
 		$this->load->view("sitemap", $data);
 	}
