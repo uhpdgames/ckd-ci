@@ -31,27 +31,31 @@ if(is_array($allVoucher) && count($allVoucher) > 0):
 		<div class="fixed-vouchers-footer-heading">
 			<h3 class="fixed-vouchers-footer-title">Các mã giảm có thể sử dụng:</h3>
 		</div>
+		<div class="voucher-container">
 		<ul class="fixed-vouchers-footer-list">
 
-			<?php
-			foreach ($allVoucher as $voucher):
-				$code = $voucher['code']?? "";
-				if($code == 'register' || $code=="") continue;
-				$rate = $voucher['rate']?? "10";
-				$text_code = "<p class='m-0 p-0'>Nhập mã <strong class='color-main'>{$code}</strong></p>";
-				$text_rate = "<span class='px-2'>Giảm {$rate}% giá trị đơn hàng</span>";
-				$text_counter = "<p>Lượt đã sử dụng ( <span class='used-counter' id='counter2'>{$rate}</span> ) </p>";
-			?>
-			<li class="fixed-voucher">
-				<button class="voucher-copy-btn" data-voucher="<?=$code?>"><?=$code?></button>
-				<div class="fixed-voucher-infobox">
-					<?=$text_code?>
-					<?=$text_rate?>
-					<?=$text_counter?>
-				</div>
-			</li>
-			<?php endforeach; ?>
-		</ul>
+<?php
+foreach ($allVoucher as $voucher):
+	$code = $voucher['code']?? "";
+	if($code == 'register' || $code=="") continue;
+	$rate = $voucher['rate']?? "10";
+	$text_code = "<p class='m-0 p-0'>Nhập mã <strong class='color-main'>{$code}</strong></p>";
+	$text_rate = "<span class='px-2'>Giảm {$rate}% giá trị đơn hàng</span>";
+	$text_counter = "<p>Lượt đã sử dụng ( <span class='used-counter' id='counter2'>{$rate}</span> ) </p>";
+?>
+<li class="fixed-voucher fixed-voucher-next">
+	<button class="voucher-copy-btn" data-voucher="<?=$code?>"><?=$code?></button>
+	<div class="fixed-voucher-infobox">
+		<?=$text_code?>
+		<?=$text_rate?>
+		<?=$text_counter?>
+	</div>
+</li>
+
+<?php endforeach; ?>
+</ul>
+		</div>
+		
 	</div>
 </div>
 
@@ -155,6 +159,7 @@ if(is_array($allVoucher) && count($allVoucher) > 0):
 		background-color: #fff;
 		border-radius: 0 100% 100% 0 / 0 50% 50% 0;
 	}
+	
 	.fixed-vouchers-footer .fixed-vouchers-footer-title {
 		margin: 10px 0;
 		color: #000;
@@ -193,17 +198,49 @@ if(is_array($allVoucher) && count($allVoucher) > 0):
 	.fixed-vouchers-footer-list .fixed-voucher:hover .fixed-voucher-infobox{
 		display:block;
 	}
+
+	.voucher-container {
+        display: flex; /* Sử dụng Flexbox */
+        flex-direction: row; /* Sắp xếp theo chiều ngang */
+        flex-wrap: wrap; /* Cho phép các mục wrap xuống hàng dưới khi không đủ không gian ngang */
+       
+    }
+
+    /* Tùy chỉnh chiều rộng của mỗi mục voucher (thay đổi theo ý muốn) */
+    .fixed-voucher-next {
+		flex: 0 0 auto; /* Không đặt mục voucher để thay đổi kích thước tự động */
+        margin-right: 10px; /* Khoảng cách giữa các mục voucher */
+    }
 	@media(max-width: 767px){
+		.fixed-voucher-next {
+			margin-right: 0px; /* Khoảng cách giữa các mục voucher */
+		}
 		.product-fixed-vouchers {
-			padding: 10px;
+			padding-top:10px;
+			padding-bottom: 10px;
 			background: #fff;
 		}
 		.fixed-vouchers-footer-list .fixed-voucher::before, .fixed-vouchers-footer-list .fixed-voucher::after{
 			background-color: #f5f5f5;
 		}
 		.fixed-vouchers-footer-list{
-			padding-bottom: 0
+			padding-bottom: 0;
+			gap: 0.4rem 0.7rem;
 		}
+		.fixed-voucher-infobox::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    bottom: 100%;
+    position: absolute;
+    left: 14%;
+    background: #fff;
+    transform: translate(-50%, 40%) rotate(45deg);
+    border: 1.5px solid #00000024;
+    border-bottom: 0;
+    border-right: 0;
+}
+
 	}
 	@media (max-width:480px){
 		.fixed-voucher-infobox {
@@ -213,6 +250,31 @@ if(is_array($allVoucher) && count($allVoucher) > 0):
 		.fixed-vouchers-heading .fixed-vouchers-title{
 			font-size: 16px;
 		}
+		
+	}
+
+	/* ipad  */
+	@media (min-width: 768px) and (max-width: 1024px) {
+		.fixed-voucher-infobox {
+			left: -8px;
+			transform: translate(0%, 10px);
+			font-size: 0.6rem !important;
+		}
+
+		.fixed-voucher-infobox::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    bottom: 100%;
+    position: absolute;
+    left: 14%;
+    background: #fff;
+    transform: translate(-50%, 40%) rotate(45deg);
+    border: 1.5px solid #00000024;
+    border-bottom: 0;
+    border-right: 0;
+}
+		
 	}
 </style>
 

@@ -167,17 +167,23 @@
 
             <p class="headingArea title--detail catchuoi2"><?= $row_detail['ten'] ?></p>
             <div class="row">
-                <div class="col-4 detail-title cover--detail pb-3"><?= getLang('masp') ?></div>
+                <div class="col-4 detail-title cover--detail pb-3"
+                style="padding-left: 0%"
+                ><?= getLang('masp') ?></div>
                 <div
                         class="col-8 cover--detail"><?= (isset($row_detail['masp']) && $row_detail['masp'] != '') ? $row_detail['masp'] : '' ?></div>
             </div>
             <div class="row">
-                <div class="col-4 detail-title cover--detail pb-3"><?= getLang('thetich') ?></div>
+                <div class="col-4 detail-title cover--detail pb-3"
+                style="padding-left: 0%"
+                ><?= getLang('thetich') ?></div>
                 <div
                         class="col-8 cover--detail"><?= (isset($row_detail['thetich']) && $row_detail['thetich'] != '') ? $row_detail['thetich'] : '' ?></div>
             </div>
             <div class="row">
-                <div class="col-4 detail-title cover--detail pb-3"><?= getLang('gia') ?></div>
+                <div class="col-4 detail-title cover--detail pb-3"
+                style="padding-left: 0%"
+                ><?= getLang('gia') ?></div>
                 <div class="col-8 cover--detail">
                     <?php if ($row_detail['giamoi']) { ?>
                         <span class="price-new-pro-detail"
@@ -191,7 +197,9 @@
             </div>
 
             <div class="row">
-                <div class="col-4 detail-title cover--detail"><?= getLang('soluong') ?></div>
+                <div class="col-4 detail-title cover--detail"
+                style="padding-left: 0%"
+                ><?= getLang('soluong') ?></div>
                 <div class="col-4">
                     <div class="attr-content-pro-detail d-block">
                         <div class="quantity-pro-detail">
@@ -221,7 +229,10 @@
 
             </div>
             <!-- banner hình ảnh quảng cáo -->
-
+            <!--TODO QUA TANG KEM THEO-->
+                    <?php $this->load->view('page/product/gifts'); ?>
+					<!--TODO VOUCHER-->
+					<?php $this->load->view('page/product/voucher'); ?>
             <!--TODO QUA TANG KEM THEO-->
 
             <!--			<div class="wp-gift pt-4 pb-4">-->
@@ -302,10 +313,53 @@
                     </div>
                 </div>
             </div>-->
-			<div class="row" style="padding-left: 2%">
+
+            <?php $fast_delivery_2h = 'Áp dụng đơn trên 1 triệu đồng ere dsadsadsadsa ddddddddddddrer ererreredasdasad';
+
+					if($fast_delivery_2h):
+					?>
+
+					<div class="quick_ship">
+						<img class="imgimage_quick_ship loading" src="<?=MYSITE?>assets/images/now-free.png">
+						<?=htmlspecialchars_decode($fast_delivery_2h)?>
+						<style>
+                            .quick_ship{
+                                padding: 10px 0;
+                            }
+							.imgimage_quick_ship {
+								height: 17px;
+								margin-right: 2px;
+								/* padding: 5px 0; */
+                                padding-top: 5px;
+    
+								/* margin-top: -4px; */
+								border: 0px;
+								font-size: 0;
+								line-height: 0;
+								max-width: 100%;
+							}
+                            @media (min-width: 768px) and (max-width: 1024px) {
+                                .imgimage_quick_ship {
+								height: 27px;
+								margin-right: 2px;
+								/* padding: 5px 0; */
+                                padding-top: 5px;
+    
+								/* margin-top: -4px; */
+								border: 0px;
+								font-size: 0;
+								line-height: 0;
+								max-width: 100%;
+							}
+                            }
+						</style>
+					</div>
+
+					<?php endif;?>
+			<div class="row">
 				<?= share_link();?>
 			</div>
-            <div class="row pt-5 cover-mb-combo-button" style="padding-left: 2%">
+            <div class="row pt-5 cover-mb-combo-button">
                 <div class="col-12">
                     <!-- <div class="col-6"></div> -->
 
