@@ -46,7 +46,11 @@ if(!empty($gifts) && count($gifts) > 0){
 			?>
 
 		<div class="container-voucher mt-4">
-			<div class="row">
+			<div class="row"
+			style="
+			margin-right: -15px !important;
+  	  margin-left: -15px !important;"
+			>
 				<div class="col-1">
 					<div class="form-check">
 						<input name="chosen_gift" data-img="<?=$link?>" class="chosen_gift form-check-input" type="radio" id="gift-<?=$stt?>" value="<?=$name?>" <?=$check_name?>/>

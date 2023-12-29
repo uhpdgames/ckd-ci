@@ -228,12 +228,11 @@
                 </div>
 
             </div>
-            <!-- banner hình ảnh quảng cáo -->
-            <!--TODO QUA TANG KEM THEO-->
+                  
                     <?php $this->load->view('page/product/gifts'); ?>
-					<!--TODO VOUCHER-->
 					<?php $this->load->view('page/product/voucher'); ?>
-            <!--TODO QUA TANG KEM THEO-->
+
+                
 
             <!--			<div class="wp-gift pt-4 pb-4">-->
             <!--				<div class="sp_dis_container">-->
