@@ -604,11 +604,16 @@
 
 	.menu-icon-mb{
 		width: 30%;
-	}s
+	}
 }
 @media (min-width: 500px) and (max-width: 767px) {
 	.menu-icon-mb{
 		width: 40%;
+	}
+}
+@media  (min-width: 200px) and (max-width: 768px) {
+	.fix_product_from_home{
+		height: 20rem;
 	}
 }
 @media (min-width: 768px) and (max-width: 991px) {

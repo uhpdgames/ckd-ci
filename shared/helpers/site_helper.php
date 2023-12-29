@@ -732,35 +732,63 @@ function get_product_slick($truyvan, $sluglang, $slide = false)
 			$start .= '</span></div>';
 
 
+			// <div class="item">
+			// <div class="img_sp zoom_hinh"><a href="san-pham/serum-nang-co-mat-ngan-ngua-lao-hoa-da-ckd-retino-collagen-guasha-tieu-phan-tu-300-400-ml" title="Serum Nâng Cơ Mặt, Ngăn Ngừa Lão Hóa da, CKD Retino Collagen Guasha  Tiểu Phân Tử 300 40ML"><img class="img-fluid" src="upload/product/ckd-retino-collagen-small-molecule-300-guasha-lifting-serum-9626.webp" alt="Serum Nâng Cơ Mặt, Ngăn Ngừa Lão Hóa da, CKD Retino Collagen Guasha  Tiểu Phân Tử 300 40ML"></a>
+			// 	<span class="cart-buy addcart transition " data-id="265" data-action="buynow"></span>
+			// 				</div>
+			// <h3 class="name_sp catchuoi2"><a href="san-pham/serum-nang-co-mat-ngan-ngua-lao-hoa-da-ckd-retino-collagen-guasha-tieu-phan-tu-300-400-ml" title="Serum Nâng Cơ Mặt, Ngăn Ngừa Lão Hóa da, CKD Retino Collagen Guasha  Tiểu Phân Tử 300 40ML">Serum Nâng Cơ Mặt, Ngăn Ngừa Lão Hóa da, CKD Retino Collagen Guasha  Tiểu Phân Tử 300 40ML</a>
+			// </h3>
+			// <!--<p class="mota catchuoi3"></p>-->
+			// <p class="gia_sp">
+			// 	<span style="display: block;" class="gia giacu">819.000đ</span>
+			// 	<span style="display: block;" class="giamoi">696.150đ</span>
+			// </p>
+			// <span class="new">New</span>
+			// </div>
+
 			$html .= <<<HTML
-                <div class="box-item item_img">
-                <div class="item item_i swiper-slide">
-                    <div class="img_sp zoom_hinh">
-                        <a href="$link" title="$ten"><img
-                                    class="no_lazy"
-                                    data-lazy="$img"
-                                    alt="$ten"></a>
-                        <span class="cart-buy addcart transition " data-id="$id" data-action="buynow"></span>
-                        $t_hethang
-                    </div>
-                    <h3 class="name_sp catchuoi2"><a href="$link" title="$ten">$ten</a></h3>
-                    
-                    
-                    <div>
-                    
-</div>
-                    
-                    
-                   $not_slide 
-				   <p class="gia_sp">
-   						 <span class="giamoi" style="display: block;">$giamoi</span>
-    					 <span class="gia $t_class" style="display: block;">$gia</span>
-   					   $t_moi
-   					   
-				  </p>     
-				        
-                </div>
-            </div>
+<!-- <div class="box-item item_img">
+    <div class="item item_i swiper-slide">
+        <div class="img_sp zoom_hinh">
+            <a href="$link" title="$ten"><img class="no_lazy" data-lazy="$img" alt="$ten" /></a>
+
+            <span class="cart-buy addcart transition" data-id="$id" data-action="buynow"></span>
+            $t_hethang
+        </div>
+        <h3 class="name_sp catchuoi2">
+			<a href="$link" title="$ten">$ten</a>
+		</h3>
+
+        <div></div>
+
+        $not_slide
+        <p class="gia_sp">
+            <span class="giamoi" style="display: block;">$giamoi</span>
+            <span class="gia $t_class" style="display: block;">$gia</span>
+            $t_moi
+        </p>
+    </div>
+</div> -->
+
+		 <div class="item fix_product_from_home"
+		 >
+			<div class="img_sp zoom_hinh">
+			<a href="$link" title="$ten"><img class="no_lazy" data-lazy="$img" alt="$ten" /></a>
+			<span class="cart-buy addcart transition" data-id="$id" data-action="buynow"></span>
+			$t_hethang
+			</div>
+			<h3 class="name_sp catchuoi2">
+			<a href="$link" title="$ten">$ten</a>
+			</h3>
+			<!--<p class="mota catchuoi3"></p>-->
+			$not_slide
+			<p class="gia_sp">
+				<span style="display: block;" class="gia giacu">819.000đ</span>
+			<span style="display: block;" class="giamoi">696.150đ</span>
+			 </p>
+			<span class="new">New</span>
+			</div>
+
 HTML;
 ///$t_moi = $start
 		}
