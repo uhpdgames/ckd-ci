@@ -56,12 +56,12 @@ array('chinh-sach')); //?com=news&act=man&type=chinh-sach&p=1 ?>
         </div>
         <div class="row">
             <div class="col-6">
-                <a title="canthay" href="<?= MYSITE ?>">
+                <a title="CKD COS VIET NAM" href="<?= MYSITE ?>">
                     <img class="img-fluid" src="<?= image_default('logo-footer') ?>" alt="CKD COS VIET NAM" />
                 </a>
             </div>
             <div class="col-6">
-                <a title="canthay" href="<?= MYSITE ?>">
+                <a title="CKD COS VIET NAM" href="<?= MYSITE ?>">
                     <img class="img-fluid" width="70%" src="<?= image_default('bocongthuong') ?>" alt="CKD COS VIET NAM" />
                 </a>
             </div>
@@ -131,7 +131,7 @@ array('chinh-sach')); //?com=news&act=man&type=chinh-sach&p=1 ?>
 								foreach ($chinhsach as $cs) {
 									?>
                                 <div class="col-12">
-                                    <a title="canthay" href="<?= $cs['link'] ?? '#' ?>" target="_self"><?= $cs['ten'] ?></a>
+                                    <a title="CKD COS VIET NAM" href="<?= $cs['link'] ?? '#' ?>" target="_self"><?= $cs['ten'] ?></a>
                                 </div>
                                 <?php
 								}
