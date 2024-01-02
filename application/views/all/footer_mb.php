@@ -4,7 +4,7 @@ from #_photo where type = ? order by stt,id desc", array('mangxahoi')); $lienhe 
 noidung$lang as noidung, ten$lang as ten from #_static where type = ?", array('thong-tin-khac')); $chinhsach = $d->rawQuery("select tenkhongdau$lang as link, ten$lang as ten from #_news where type = ? order by stt,id desc",
 array('chinh-sach')); //?com=news&act=man&type=chinh-sach&p=1 ?>
 
-<footer id="footer" class="mb-5">
+<footer id="footer" class=" mb mb-5">
     <div class="container">
         <div class="font-footer-mb">
         <div class="row">
