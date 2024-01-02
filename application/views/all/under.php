@@ -19,8 +19,8 @@
 <?php
 endif;
 ?>
-
-<?php $this->load->view('all/footer'); ?>
+<?php $this->load->view('all/footer_pc'); ?>
+<?php $this->load->view('all/footer_mb'); ?>
 <!--KHÔNG THAY ĐỔI NỘI DUNG BÊN DƯỚI-->
 <?php if ($isMobile) : echo link_tag(site_url() . 'assets/css/mobile.css?v=' . time()); ?>
 <?php endif; ?>
