@@ -312,12 +312,22 @@ $qua_tang = $this->session->userdata('has_quatang');
 								</div>
 							</div>
 
+			
+
 							<div class="input-cart">
 								<input type="text" class="form-control" id="diachi" name="diachi"
 									   placeholder="<?= getLang('diachi') ?>"
 									   value="<?= (isset($_SESSION[$login_member]['diachi'])) ? $_SESSION[$login_member]['diachi'] : '' ?>"
 									   required/>
 								<div class="invalid-feedback"><?= getLang('vuilongnhapdiachi') ?></div>
+							</div>
+
+							<div class="input-cart">
+								<input type="text" class="form-control" id="diachinhanhang" name="diachinhanhang"
+									   placeholder="<?= getLang('diachinhanhang') ?>"
+									   value="<?= (isset($_SESSION[$login_member]['diachinhanhang'])) ? $_SESSION[$login_member]['diachi'] : '' ?>"
+									   required/>
+								<div class="invalid-feedback"><?= getLang('vuilongnhapdiachinhanhang') ?></div>
 							</div>
 
 							<?php
@@ -340,12 +350,12 @@ $qua_tang = $this->session->userdata('has_quatang');
                                 <textarea class="form-control" id="yeucaukhac" name="yeucaukhac"
 										  placeholder="<?= getLang('yeucaukhac') ?>"/></textarea>
 							</div>
-							<div class="input-cart ">
+							<!-- <div class="input-cart ">
 								<input type="text" class="form-control" id="magioithieu" name="magioithieu"
 									   placeholder="<?= getLang('magioithieu') ?>"
 									   value="<?= (isset($_SESSION[$login_ctv]['code'])) ? $_SESSION[$login_ctv]['code'] : '' ?>"
 								/>
-							</div>
+							</div> -->
 							<?php if ($magiamgia != ''): ?>
 								<div class="input-cart ">
 									<input type="text" class="form-control" id="magiamgia" onblur="updateVoucher();"
