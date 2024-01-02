@@ -52,7 +52,7 @@ $chinhsach = $d->rawQuery("select tenkhongdau$lang as link, ten$lang as ten from
 									?>
 									<div class="col-6">
 										<div href="<?= MYSITE . $h['link'] ?>">
-											<p class="justify-content-center text-center">
+											<p  class="justify-content-center text-center">
 											<span class="w-100">
 												<img src="<?= MYSITE . UPLOAD_NEWS_L . $h['photo'] ?>"
 													 alt="<?= $h['ten'] ?>">
