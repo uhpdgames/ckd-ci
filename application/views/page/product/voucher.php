@@ -17,7 +17,7 @@ if(is_array($allVoucher) && count($allVoucher) > 0):
 			foreach ($allVoucher as $voucher):
 				$text = "<p>Nhập mã <strong class='color-main'>{$voucher['code']} giảm {$voucher['rate']}%</strong> giá trị đơn hàng </p>";
 				if($voucher['code'] == 'register'){
-					$text = "Nhận ngay <strong class='color-main'>mã giảm giá 10%</strong> khi bạn đăng ký là thành viên của CKD";
+					$text = "<p>Nhận ngay <strong class='color-main'>mã giảm giá 10%</strong> khi bạn đăng ký là thành viên của CKD </p>";
 				}
 			?>
 			<li class="fixed-voucher">
